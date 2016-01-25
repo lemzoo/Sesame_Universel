@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author LamineBA
  */
-public class IdentifiantAndKeyTable {
+public class IdentifiantAndKeyTable implements java.io.Serializable {
     
     private ArrayList<DeviceLinkedData> table_device_info;
     
@@ -22,14 +22,18 @@ public class IdentifiantAndKeyTable {
     /**
      * Methode addDeviceForLink () allow you to add the identifiant and key on the table
      * @param device
-     * @param id
-     * @param key
      */
-    public void addDeviceForLink(DeviceLinkingData device, String id, String key){
-        if (device != null && id != null && key != null){
-            
-            DeviceLinkedData dev = new DeviceLinkedData(device, id, key);
-            table_device_info.add(dev);
+    public void addDeviceForLink(DeviceLinkedData device){
+        DeviceLinkingData dev;
+        String id;
+        String key;
+        
+        if (device != null){
+            dev = (DeviceLinkingData)(device.getDeviceLinkingInformation());
+            id = (String)(device.getDeviceId());
+            key = (String)(device.getDeviceKey());
+            DeviceLinkedData devi = new DeviceLinkedData(dev, id, key);
+            table_device_info.add(devi);
             
         }
         else{
@@ -86,19 +90,26 @@ public class IdentifiantAndKeyTable {
     public String toString(){
         String chaine = "<---------------------------------------------------->" + "\n"+
                         "<---  Table containing the identifiants and keys  --->" + "\n";
-        
         int count = 0;
-        while (count < table_device_info.size()){
-            chaine += "<---------------------------------------------------->" + "\n";
-            chaine += "Device Number : " +count+  "\n"; 
-            chaine += table_device_info.get(count).getDeviceLinkingInformation().toString() + "\n"; 
-            chaine += "Device Id = " + table_device_info.get(count).getDeviceId() + "\n"; 
-            chaine += "Device Key = " + table_device_info.get(count).getDeviceKey() + "\n";
-            count ++;
+        
+        if (table_device_info.isEmpty()){
+            chaine += "Il n'y a aucun périphérique rattaché" + "\n";
+        }
+        else{
+            while (count < table_device_info.size()){
+                chaine += "<---------------------------------------------------->" + "\n";
+                chaine += "Device Number : " +count+1 +  "\n"; 
+                chaine += table_device_info.get(count).getDeviceLinkingInformation().toString() + "\n"; 
+                chaine += "Device Id = " + table_device_info.get(count).getDeviceId() + "\n"; 
+                chaine += "Device Key = " + table_device_info.get(count).getDeviceKey() + "\n";
+                count ++;
+            }
         }
         chaine += "<---------------------------------------------------->";
         return chaine;
     }
+    
+    private static final long serialVersionUID = 42L; 
     
     public static void main (String [] args){
         IdentifiantAndKeyTable id = new IdentifiantAndKeyTable();
@@ -107,23 +118,27 @@ public class IdentifiantAndKeyTable {
         String [] data = {"Maison", "Proprietaire", "Rez de Chaussee", "Porte d'entree principale", "Ma residence principale",
                           "13", "Avenue Maximilien Robespierre", "94400", "Vitry sur Seine", "France"};
         DeviceLinkingData dev = new DeviceLinkingData(data);
-        id.addDeviceForLink(dev, ide, key);
+        //id.addDeviceForLink(dev, ide, key);
         
         ide = "SESAME HAND";
         key = "QSDFGHJKLM";
-        id.addDeviceForLink(dev, ide, key);
+        //id.addDeviceForLink(dev, ide, key);
         
         ide = "SESAME CAR";
         key = "WXCVBN";
-        id.addDeviceForLink(dev, ide, key);
+        //id.addDeviceForLink(dev, ide, key);
         
-        System.out.println(id);
-        
-        
+        System.out.println(id);   
     }
 }
 
-class DeviceLinkedData {
+/**
+ * Class : DeviceLinkedData() it's a class which contains the information of the device. 
+ * -> Attributs : device_info, device_id, device_key. 
+ * -> Methode : accessors get and set of the attribut. 
+ * @author LamineBA
+ */
+class DeviceLinkedData implements java.io.Serializable {
 
      private DeviceLinkingData device_info;
      private String device_id;
@@ -147,9 +162,13 @@ class DeviceLinkedData {
      * @param device_info 
      */
     public void setDeviceLinkingInformation(DeviceLinkingData device_info) {
-        this.device_info = device_info;
+        if (device_info != null){
+            this.device_info = device_info;
+        }
+        else{
+            System.out.println("La classe passée en paramètre est null");
+        }
     }
-    //====>
     
     /**
      * Methode : getDeviceId() allow you to get the Id of the device
@@ -165,7 +184,6 @@ class DeviceLinkedData {
     public void setDeviceId(String id) {
         this.device_id = id;
     }
-    //====>
     
     /**
      * Methode : getDeviceKey() allow you to get the key of the device
@@ -181,5 +199,6 @@ class DeviceLinkedData {
     public void setDeviceKey(String key) {
         this.device_key = key;
     }
-    //====>
+    
+    private static final long serialVersionUID = 42L; 
 }

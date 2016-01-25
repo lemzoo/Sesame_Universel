@@ -34,6 +34,8 @@ public class SerialPortGPIO implements ConstantsConfiguration{
     private Serial serial;
     UARTListener uart_listener = null;
     private String buffer;
+    private String identifiant = "";
+    private String key = "";
 
     /**
      * Class : SerialPortGPIO is the class which configure the uart port. 
@@ -526,7 +528,7 @@ public class SerialPortGPIO implements ConstantsConfiguration{
                     System.out.println("La confirmation de rattachement est bien recue");
                 }
                 else{
-                    System.out.println("La confirmation de rattachement n'est pasrecue");
+                    System.out.println("La confirmation de rattachement n'est pas recue");
                 }
             }
             else{
@@ -582,15 +584,15 @@ public class SerialPortGPIO implements ConstantsConfiguration{
      */
     public boolean checkLinkingConfirmation(String [] data) throws InterruptedException {
         boolean flag = false;
-        String identifiant = "";
+        String id_got_from_device = "";
         int formule; 
-        DeviceLinkingData device = null;
-        File file = new File("linking_data.ser");
+        CreateAccesKey all_key = null;
+        File file = new File("all_key_saved.ser");
 
         if (data != null && data.length >0){
             
-            identifiant = data[0];
-            formule = identifiant.length()*128; 
+            id_got_from_device = data[0];
+            formule = id_got_from_device.length()*128; 
             
             int formule_recu=0; 
             try{
@@ -602,19 +604,42 @@ public class SerialPortGPIO implements ConstantsConfiguration{
             if (formule == formule_recu){
                 System.out.println("CRC Correct");
                 
+                // Save the identifiant in the temporary variable
+                this.identifiant = id_got_from_device;
+                
+                // Get a valued key from a table which containing all keys. 
+                
+                
                 // Deserialization 
                 try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
-                    device = (DeviceLinkingData) in.readObject();
-                    device.setDeviceIdentifiant(identifiant);
-                    System.out.println("Identifiant of the device = " + device.getDeviceIdentifiant());
+                    all_key = (CreateAccesKey) in.readObject();
+                    key = all_key.getOneValideKey();
+                    System.out.println("Identifiant = " + identifiant);
+                    System.out.println("Key Gotten = " + key);
                     flag = true;
                     
                     // Make the Serialization before closing the windows
                     try{
                         try (FileOutputStream fileOut = new FileOutputStream(file); ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
-                            out.writeObject(device);
-                            System.out.println("linking_data.ser file is created correcly");
-                            System.out.println("Identifiant du device = " + device.getDeviceIdentifiant());
+                            out.writeObject(all_key);
+                            System.out.println("all_key_saved.ser file is created correcly");
+                            
+                            // Arrange the data about the key
+                            int key_size = key.length();
+                            int checksum = 0;
+                            String [] key_data = new String[4];
+                            checksum  = (key_size*128) + ((int)(key_size/2))*64 + ((int)(key_size/4))*32; 
+                            checksum += ((int)(key_size/8))*16 + ((int)(key_size/16))*8 + ((int)(key_size/32))*4;
+                            checksum += ((int)(key_size/64))*2;
+                            
+                            key_data[0] = DEBUT_ENVOIE_KEY_LINK;
+                            key_data[1] = key;
+                            key_data[2] = Integer.toString(checksum);
+                            key_data[3] = FIN_ENVOIE_KEY_LINK;
+                            
+                            // Envoie du tab
+                            this.sendData(key_data);
+                            
                         }
                     }catch(IOException i){
                         System.out.println("Exception de Serialisation : " + i.getMessage());
@@ -623,7 +648,7 @@ public class SerialPortGPIO implements ConstantsConfiguration{
                 }catch(IOException i){
                     flag = false;
                 }catch(ClassNotFoundException c){
-                   System.out.println("DeviceLinkingData class not found : " + c.getMessage());
+                   System.out.println("CreateAccesKey class not found : " + c.getMessage());
                    flag =false;
                 }
             }

@@ -17,9 +17,6 @@ import java.util.logging.Logger;
  * @author LamineBA
  */
 public class HomeScreen extends javax.swing.JFrame {
-    private String clignotant_true = ":";
-    private String clignotant_false = " ";
-    private String clignotant = clignotant_true;
     /**
      * Creates new form HomeScreen
      */

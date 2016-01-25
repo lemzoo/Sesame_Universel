@@ -23,6 +23,7 @@ public class Authentification extends javax.swing.JFrame {
     
     private final OwnerInformation user;
     private final CreateAccesKey all_key;
+    private IdentifiantAndKeyTable table_id_key;
     private JPasswordField password;
     
     /**
@@ -33,8 +34,15 @@ public class Authentification extends javax.swing.JFrame {
         password = new JPasswordField(null, "", 0);
         user = new OwnerInformation(true);
         System.out.println(user);
+        
+        // Create 10 keys for the test. 
         all_key = new CreateAccesKey(10);
         System.out.println(all_key);
+        
+        // Create the table which contains all identifiant and key with the linking information. 
+        table_id_key = new IdentifiantAndKeyTable();
+        System.out.println(table_id_key);
+        
         username_jlabel.setText(user.getOwnerLastName() + " " + user.getOwnerFirstName());
     }
 
@@ -223,31 +231,33 @@ public class Authentification extends javax.swing.JFrame {
                 
                 // Make the Serialization for OwnerInformation 
                 File file = new File("owner_information.ser");
-                try{
-                    FileOutputStream fileOut = new FileOutputStream(file); 
-                    ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                try(FileOutputStream fileOut = new FileOutputStream(file); ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
                     out.writeObject(user);
-                    out.close();
-                    fileOut.close();
-                   System.out.println("Serialized data is saved in owner_information.ser");
                 }catch(IOException i){
                     System.out.println("Exception for OwnerInformation");
                 }
                 // End of the Serialization for OwnerInformation
+                System.out.println("Serialized data is saved in owner_information.ser");
                 
                 // Make the Serialization for CreateAccesKey 
                 file = new File("all_key_saved.ser");
-                try{
-                    FileOutputStream fileOut = new FileOutputStream(file); 
-                    ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                try(FileOutputStream fileOut = new FileOutputStream(file); ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
                     out.writeObject(all_key);
-                    out.close();
-                    fileOut.close();
-                   System.out.println("Serialized of CreateAccesKey is saved in all_key_saved.ser");
                 }catch(IOException i){
                     System.out.println("Exception for CreateAccesKey");
                 }
                 // End of the Serialization for CreateAccesKey
+                System.out.println("Serialized of CreateAccesKey is saved in all_key_saved.ser");
+                
+                // Make the Serialization for IdentifiantAndKeyTable 
+                file = new File("identifiant_and_key_table.ser");
+                try(FileOutputStream fileOut = new FileOutputStream(file); ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+                    out.writeObject(table_id_key);
+                }catch(IOException i){
+                    System.out.println("Exception for IdentifiantAndKeyTable");
+                }
+                // End of the Serialization for IdentifiantAndKeyTable
+                System.out.println("Serialized of IdentifiantAndKeyTable is saved in identifiant_and_key_table.ser");
                 
                 close();
                 HomeScreen home = new HomeScreen();

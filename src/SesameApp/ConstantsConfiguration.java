@@ -37,6 +37,9 @@ public interface ConstantsConfiguration {
     final String DEBUT_ENVOIE_CONFIRMATION_RATTACHEMENT = "DECR_01";
     final String FIN_ENVOIE_CONFIRMATION_RATTACHEMENT   = "FECR_01";
     
+    final String DEBUT_ENVOIE_KEY_LINK = "DEKL_01";
+    final String FIN_ENVOIE_KEY_LINK   = "FEKL_01";
+    
     final String AUTRE_DEMANDE = "AD_01";
     final String MERCI = "MI_01";
     final String FIN_DE_LA_COMMUNICATION = "FC_01";
