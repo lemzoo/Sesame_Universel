@@ -1,0 +1,12 @@
+nouveau fichier pour le test des branch de git. 
+
+>> git branch : pour voir l'ensemble des branches du projet 
+>> git branche newBranche : crée une nouvelle branche en partant de la branche *master. Il s'agit du back up de la branche test. 
+
+>> git checkout newBranche : permet de switcher sur la nouvelle branche créé à partir de la branche master. Vous pouvez effectuer vos modifications sur cette branche sans affecter la branche original. 
+
+>> git add * : ajoute tout les fichiers sur la branche courante. 
+
+>> git commit -a + un commentaire : permet de soumettre le projet à la base de donnée local et le commentaire permet de savoir le type de modification apporté sur le projet. 
+
+>> git log : permet de voir les derniers commit effectué.
