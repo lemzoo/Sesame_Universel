@@ -23,10 +23,6 @@ public class PeripheriqueSummaryInformation extends javax.swing.JFrame implement
 
     private PeripheriqueInformation periph;
     private SerialPortGPIO port;
-    private String message_to_send = "";
-    private String received_data = "";
-    private String old_received_data = "";
-    private boolean status_reception = true;
     
     public PeripheriqueSummaryInformation() {
         initComponents();
@@ -356,18 +352,23 @@ public class PeripheriqueSummaryInformation extends javax.swing.JFrame implement
         // 2. Envoie de la trame demande de rattachement d'un Sesame; Periphérique verifie s'il est rattaché ou pas
         // 3. Peripherique renvoie une autorisation de rattachement
         // 4. Sesame envoie le fichier d'information du peripherique et son identifiant
-        
+        boolean status_linking_sesame = false;
+        boolean status_linking_owner = false;
+        boolean flag = true;
+        int tempo = 0;
         // SEND "BONJOUR" and wait the answer of the device. The expected answer is "BONJOUR"  
         try {
+            flag = true;
+            tempo = 0;
             port.sendData(BONJOUR);
-            System.out.println("BONJOUR : envoyé avec succes");
         }catch(InterruptedException e){
+            flag = false;
             System.out.println("Impossible to the send the following message : BONJOUR");
         }
         
         // Check the answer of the device in the while loop
-        boolean flag = true;
-        int tempo = 0;
+        //boolean flag = true;
+        //int tempo = 0;
         while (flag){
             if (tempo>1000){
                 flag=false;
@@ -377,27 +378,40 @@ public class PeripheriqueSummaryInformation extends javax.swing.JFrame implement
             else{
                 flag = (port.getLastReceivedData()!=null && !port.getLastReceivedData().equals(BONJOUR));
                 if (!flag){
-                    System.out.println("|BONJOUR| recu de la part du périphérique");
+                    System.out.println("|BONJOUR| sur PeripheriqueSummaryInformation");
                 }
                 tempo = tempo + 10;
                 Thread.sleep(10);
             }
         }
 
+        // Wait 10 secondes
+        tempo = 0;
+        int seconde = 1000;
+        while (tempo<5*seconde){
+            
+            //System.out.println("Tempo attente |BONJOUR| = " + tempo);
+            tempo = tempo + seconde;
+            Thread.sleep(seconde);
+        }
+        
         // The expected answer is received by the SESAME 
         if (!flag){
             // Send DEMANDE_ENREGISTREMENT_PROPRIETAIRE to the device and wait for the answer
             try {
+                flag = true;
+                tempo = 0;
                 port.sendData(DEMANDE_ENREGISTREMENT_PROPRIETAIRE);
                 System.out.println( DEMANDE_ENREGISTREMENT_PROPRIETAIRE + " : envoyé avec succes");
             }catch(InterruptedException e){
+                flag = false;
                 System.out.println("Impossible to the send the following message : " + DEMANDE_ENREGISTREMENT_PROPRIETAIRE);
             }
         }
         
         // Check the answer of the device in the while loop
-        flag = true;
-        tempo = 0;
+        //flag = true;
+        //tempo = 0;
         while (flag){
             if (tempo>1000){
                 flag=false;
@@ -415,22 +429,30 @@ public class PeripheriqueSummaryInformation extends javax.swing.JFrame implement
             }
         }
 
-        Thread.sleep(500);
+        // Wait 10 secondes
+        tempo = 0;
+        seconde = 1000;
+        while (tempo<5*seconde){
+            
+            System.out.println("Tempo end = " + tempo);
+            tempo = tempo + seconde;
+            Thread.sleep(seconde);
+        }
         
         // The expected answer is received by the SESAME 
         if (!flag){
             System.out.println("Enregistrement du proprietaire autorisé par le periphérique");
             String [] data_to_send = arrangeOwnerInformation();
+            flag = true;
+            tempo = 0;
             // Arrange the owner information and Send it
             port.sendData(data_to_send);
         }
         
-        flag = true;
-        tempo = 0;
-        System.out.println("Attente du tempo");
-        boolean status_linking_owner = false;
+        
+        //boolean status_linking_owner = false;
         while (flag){
-            if (tempo>10000){
+            if (tempo>7000){
                 flag=false;
                 System.out.println("Tempo d'attente de la réponse du périphérique a expiré");
                 tempo = 0;
@@ -442,15 +464,14 @@ public class PeripheriqueSummaryInformation extends javax.swing.JFrame implement
                     status_linking_owner = true;
                 }
                 else{
-                    tempo =  tempo + 10;
-                    Thread.sleep(10);
+                    tempo =  tempo + 1;
+                    Thread.sleep(1);
                 }
             }
         }
-
         // Wait 10 secondes
         tempo = 0;
-        int seconde = 1000;
+        seconde = 1000;
         while (tempo<5*seconde){
             
             System.out.println("Tempo = " + tempo);
@@ -472,7 +493,7 @@ public class PeripheriqueSummaryInformation extends javax.swing.JFrame implement
         flag = true;
         tempo = 0;
         while (flag){
-            if (tempo>100){
+            if (tempo>1000){
                 flag=false;
                 System.out.println("Tempo d'attente de la réponse du périphérique a expiré");
                 tempo = 0;
@@ -491,17 +512,20 @@ public class PeripheriqueSummaryInformation extends javax.swing.JFrame implement
         if (!flag){
             // Send DEMANDE_RATTACHEMENT to the device and wait for the answer
             try {
+                flag = true;
+                tempo = 0;
                 port.sendData(DEMANDE_RATTACHEMENT_SESAME);
                 System.out.println( DEMANDE_RATTACHEMENT_SESAME + " : envoyé avec succes");
             }catch(InterruptedException e)
             {
+                flag = false;
                 System.out.println("Impossible to the send the following message : DEMANDE_RATTACHEMENT_SESAME");
             }
         }
         
         // Check the answer of the device in the while loop
-        flag = true;
-        tempo = 0;
+        //flag = true;
+        //tempo = 0;
         while (flag){
             if (tempo>1000){
                 flag=false;
@@ -514,42 +538,11 @@ public class PeripheriqueSummaryInformation extends javax.swing.JFrame implement
                 if (!flag){
                     System.out.println("|RATTACHEMENT_AUTORISEE_PERIPHERIQUE| recu de la part du périphérique");
                 }
-                tempo = tempo + 100;
-                Thread.sleep(100);
+                tempo = tempo + 10;
+                Thread.sleep(10);
             }
         }
 
-        Thread.sleep(1000);
-        System.out.println("Status flag avant arrangeLinkingDate() " + flag);
-        // The expected answer is received by the SESAME 
-        if (!flag){
-            System.out.println("|RATTACHEMENT_AUTORISEE_PERIPHERIQUE| recu de la part du periphérique");
-            
-            // Arrange the owner information and Send it
-            port.sendData(arrangeLinkingData());
-        }
-        
-        flag = true;
-        tempo = 0;
-        boolean status_linking_sesame = false;
-        while (flag){
-            
-            if (tempo>10000){
-                flag=false;
-                System.out.println("Tempo d'attente de la réponse du périphérique a expiré");
-                tempo = 0;
-            }
-            else{
-                flag = (port.getLastReceivedData()!=null && !port.getLastReceivedData().equals(SESAME_RATTACHE_CORRECTEMENT));
-                if (!flag){
-                    System.out.println("|SESAME_RATTACHE_CORRECTEMENT| recu de la part du périphérique");
-                    status_linking_sesame = true;
-                }
-                tempo = tempo + 100;
-                Thread.sleep(100);
-            }
-        }
-        
         // Wait 10 secondes
         tempo = 0;
         seconde = 1000;
@@ -560,12 +553,54 @@ public class PeripheriqueSummaryInformation extends javax.swing.JFrame implement
             Thread.sleep(seconde);
         }
         
+        // The expected answer is received by the SESAME 
+        if (!flag){
+            System.out.println("|RATTACHEMENT_AUTORISEE_PERIPHERIQUE| recu de la part du periphérique");
+            flag = true;
+            tempo = 0;
+            // Arrange the owner information and Send it
+            String [] data_link = arrangeLinkingData();
+            port.sendData(data_link);
+        }
+        
+        //flag = true;
+        //tempo = 0;
+        //boolean status_linking_sesame = false;
+        while (flag){
+            if (tempo>7000){
+                flag=false;
+                System.out.println("Tempo d'attente de la réponse du périphérique a expiré");
+                tempo = 0;
+            }
+            else{
+                flag = (port.getLastReceivedData()!=null && !port.getLastReceivedData().equals(SESAME_RATTACHE_CORRECTEMENT));
+                if (!flag){
+                    System.out.println("|SESAME_RATTACHE_CORRECTEMENT| recu de la part du périphérique");
+                    status_linking_sesame = true;
+                }
+                tempo = tempo + 1;
+                Thread.sleep(1);
+            }
+        }
+        
+        // Wait 10 secondes
+        tempo = 0;
+        seconde = 1000;
+        while (tempo<5*seconde){
+            
+            System.out.println("Tempo end = " + tempo);
+            tempo = tempo + seconde;
+            Thread.sleep(seconde);
+        }
+        
         if (status_linking_owner && status_linking_sesame){
             System.out.println("L'enregistrement et le Rattachement du Sesame se sont effectués avec succés");
             // SEND "BONJOUR" and wait the answer of the device. The expected answer is "BONJOUR"  
             try {
-                port.sendData(DEMANDE_CONFIRMATION_RATTACHEMENT);
-                System.out.println("DEMANDE_CONFIRMATION_RATTACHEMENT : envoyé avec succes");
+                Thread.sleep(1000);
+                port.getSerial().flush();
+                Thread.sleep(1000);
+                port.sendData(DEMANDE_CONFIRMATION_RATTACHEMENT);                
             }catch(InterruptedException e)
             {
                 System.out.println("Impossible to the send the following message : BONJOUR");
@@ -640,6 +675,9 @@ public class PeripheriqueSummaryInformation extends javax.swing.JFrame implement
      * Methode : close() allow you to close the current windows
      */
     private void close(){
+        // Close the uart port before closing the windows
+        port.closeUartPort();
+        
         WindowEvent winClosing = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
         Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosing);
     }
@@ -660,22 +698,23 @@ public class PeripheriqueSummaryInformation extends javax.swing.JFrame implement
         File file = new File("owner_information.ser");
         try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
             user = (OwnerInformation) in.readObject();
-
+            //System.out.println("Extraction de OwnerInformation");
+            
             // Put the owner information in the buffer
             owner_data[0]  = user.getOwnerFirstName();
             owner_data[1]  = user.getOwnerLastName();
-            owner_data[2]  = String.valueOf(user.getOwnerBirthdayDate().getDay());
-            owner_data[3]  = String.valueOf(user.getOwnerBirthdayDate().getMonth());
-            owner_data[4]  = String.valueOf(user.getOwnerBirthdayDate().getYear());
+            owner_data[2]  = Integer.toString(user.getOwnerBirthdayDate().getDay());
+            owner_data[3]  = Integer.toString(user.getOwnerBirthdayDate().getMonth());
+            owner_data[4]  = Integer.toString(user.getOwnerBirthdayDate().getYear());
             owner_data[5]  = user.getOwnerPhoneNumber();
             owner_data[6]  = user.getOwnerEmailAddress();
-            owner_data[7]  = String.valueOf(user.getOwnerStreetNumber());
+            owner_data[7]  = Integer.toString(user.getOwnerStreetNumber());
             owner_data[8]  = user.getOwnerStreetName();
-            owner_data[9]  = String.valueOf(user.getOwnerCodePostale());
+            owner_data[9]  = Integer.toString(user.getOwnerCodePostale());
             owner_data[10] = user.getOwnerCity();
             owner_data[11] = user.getOwnerCountry();
             owner_data[12] = user.getOwnerIdentifiant();
-            owner_data[13] = user.getOwnerPassword().getText();
+            owner_data[13] = (String)(user.getOwnerPassword().getText());
 
             // Send the first frame to inform the device all the data received after taht frame is to save
             data[0]  = DEBUT_ENVOIE_INFORMATION_PROPRIETAIRE;
@@ -683,25 +722,31 @@ public class PeripheriqueSummaryInformation extends javax.swing.JFrame implement
             // Put the linking information 
             for (int i=0; i<owner_data.length; i++){
                 data[i+1] = owner_data[i];
+                //System.out.println("Owner_data["+i+"] = " + owner_data[i] + ", length = " + owner_data[i].length());
             }
 
             // Create the checksum
             int formule = 0; 
             int number_element = owner_data.length;
             for (int j=0; j<number_element; j++){
+                //System.out.println("Formule = " + formule);
                 formule = formule + (number_element-j)*owner_data[j].length();
             }
+            //System.out.println("Formule = " + formule);
             int checksum = formule - number_element*128;
-            data[number_element + 1] = String.valueOf(checksum);
+            //System.out.println("Checksum = " + checksum);
+            data[number_element + 1] = Integer.toString(checksum);
 
             // Send the last frame to inform the device that is the last data
             data[number_element + 2] = FIN_ENVOI_INFORMATION_PROPRIETAIRE;
 
-        }catch(IOException i){
+        }catch(IOException io){
+            System.out.println("Exception de IO : " + io.getMessage());
         }catch(ClassNotFoundException c){
            System.err.println("OwnerInformation class not found");
         }
         
+        System.out.println("Data : " + data);
         return data;
     }
 

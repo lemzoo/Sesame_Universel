@@ -33,13 +33,12 @@ public class PeripheriqueContrat extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
         decliner_jbutton = new javax.swing.JToggleButton();
         accepter_jbutton = new javax.swing.JToggleButton();
         jPanel4 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Conditions Générales de Rattachement");
@@ -55,29 +54,13 @@ public class PeripheriqueContrat extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(52, 52, 52)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 15, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("Ce contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations");
-        jScrollPane1.setViewportView(jTextArea1);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
         );
 
         decliner_jbutton.setBackground(new java.awt.Color(255, 0, 0));
@@ -134,17 +117,24 @@ public class PeripheriqueContrat extends javax.swing.JFrame {
             .addGap(0, 8, Short.MAX_VALUE)
         );
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jTextArea1.setText("Ce contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations\net d'engagement. EveryGates respecte votre vie privée. \n\nCe contrat a pour but de sensibiliser l'utilisateur du système\nde EveryGates de prendre conscience les règles d'utilisations");
+        jScrollPane1.setViewportView(jTextArea1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -154,13 +144,13 @@ public class PeripheriqueContrat extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        setSize(new java.awt.Dimension(407, 567));
+        setSize(new java.awt.Dimension(432, 568));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -217,7 +207,6 @@ public class PeripheriqueContrat extends javax.swing.JFrame {
     private javax.swing.JToggleButton decliner_jbutton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;

@@ -5,17 +5,33 @@
  */
 package SesameApp;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author LamineBA
  */
-public class AccesIHM extends javax.swing.JFrame {
+public class AccesIHM extends javax.swing.JFrame implements ConstantsConfiguration{
 
     /**
-     * Creates new form AccesIHM
+     * Creates new form AccesIHM which contains all information about the device and owner
      */
+    private String identifiant_sesame = "";
+    private String key = "";
+    private IdentifiantAndKeyTable tablea_id_key = null;
+    private DeviceLinkingData device_linking = null;
+    private OwnerInformation owner = null;
+    private SerialPortGPIO port;
+    
     public AccesIHM() {
         initComponents();
+        this.identifiant_sesame = "";
+        port = new SerialPortGPIO(115200);
     }
 
     /**
@@ -42,16 +58,29 @@ public class AccesIHM extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         status_acces_jlabel = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        device_name_jlabel = new javax.swing.JLabel();
+        nom_peripherique_jlabel = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        owner_name_jlabel = new javax.swing.JLabel();
+        nom_prenom_proprietaire_jlabel = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        type_bien_jlabel = new javax.swing.JLabel();
+        type_appartenance_jlabel = new javax.swing.JLabel();
+        emplacement_jlabel = new javax.swing.JLabel();
+        type_porte_jlabel = new javax.swing.JLabel();
+        numero_nom_rue_jlabel = new javax.swing.JLabel();
+        code_postale_ville_jlabel = new javax.swing.JLabel();
+        pays_jlabel = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
 
         popupMenu1.setLabel("popupMenu1");
 
         popupMenu2.setLabel("popupMenu2");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestion des accès");
         setResizable(false);
 
@@ -90,12 +119,27 @@ public class AccesIHM extends javax.swing.JFrame {
 
         diagnostiquer.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         diagnostiquer.setText("DIAGNOSTIQUER");
+        diagnostiquer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                diagnostiquerMouseReleased(evt);
+            }
+        });
 
         ouvrir.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         ouvrir.setText("OUVRIR");
+        ouvrir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                ouvrirMouseReleased(evt);
+            }
+        });
 
         fermer.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         fermer.setText("FERMER");
+        fermer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                fermerMouseReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpanel_boutonLayout = new javax.swing.GroupLayout(jpanel_bouton);
         jpanel_bouton.setLayout(jpanel_boutonLayout);
@@ -103,11 +147,11 @@ public class AccesIHM extends javax.swing.JFrame {
             jpanel_boutonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpanel_boutonLayout.createSequentialGroup()
                 .addGap(128, 128, 128)
-                .addGroup(jpanel_boutonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fermer, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ouvrir, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(diagnostiquer))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jpanel_boutonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(diagnostiquer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ouvrir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(fermer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(144, Short.MAX_VALUE))
         );
         jpanel_boutonLayout.setVerticalGroup(
             jpanel_boutonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -118,23 +162,68 @@ public class AccesIHM extends javax.swing.JFrame {
                 .addComponent(ouvrir)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(fermer)
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         jLabel1.setText("Status sur les accès");
 
+        jLabel2.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         jLabel2.setText("Status sur l'accès : ");
 
         status_acces_jlabel.setText("FERMER");
 
+        jLabel3.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         jLabel3.setText("Nom du periphérique : ");
 
-        device_name_jlabel.setText("DEVICE_001XYZ");
+        nom_peripherique_jlabel.setText("DEVICE_001XYZ");
 
+        jLabel4.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         jLabel4.setText("Proprietaire du péripherique : ");
 
-        owner_name_jlabel.setText("EveryGates SAS");
+        nom_prenom_proprietaire_jlabel.setText("EveryGates SAS");
+
+        jLabel6.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel6.setText("Type de Bien : ");
+
+        jLabel7.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel7.setText("Type d'Appartenance : ");
+
+        jLabel8.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel8.setText("Emplacement : ");
+
+        jLabel9.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel9.setText("Type de porte : ");
+
+        jLabel10.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        jLabel10.setText("Adresse : ");
+
+        type_bien_jlabel.setText("TYPE DE BIEN");
+
+        type_appartenance_jlabel.setText("APPARTENANCE");
+
+        emplacement_jlabel.setText("EMPLACEMENT");
+
+        type_porte_jlabel.setText("TYPE DE PORTE");
+
+        numero_nom_rue_jlabel.setText("21 RUE ROBERT DEGERT");
+
+        code_postale_ville_jlabel.setText("94400 VITRY SUR SEINE");
+
+        pays_jlabel.setText("FRANCE");
+
+        jPanel2.setBackground(new java.awt.Color(0, 153, 255));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 10, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jpanel_statusLayout = new javax.swing.GroupLayout(jpanel_status);
         jpanel_status.setLayout(jpanel_statusLayout);
@@ -143,24 +232,48 @@ public class AccesIHM extends javax.swing.JFrame {
             .addGroup(jpanel_statusLayout.createSequentialGroup()
                 .addGroup(jpanel_statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpanel_statusLayout.createSequentialGroup()
-                        .addGap(121, 121, 121)
-                        .addComponent(jLabel1))
-                    .addGroup(jpanel_statusLayout.createSequentialGroup()
-                        .addGap(21, 21, 21)
                         .addGroup(jpanel_statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jpanel_statusLayout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(device_name_jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(121, 121, 121)
+                                .addComponent(jLabel1))
                             .addGroup(jpanel_statusLayout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(status_acces_jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jpanel_statusLayout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(owner_name_jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(26, Short.MAX_VALUE))
+                                .addGap(20, 20, 20)
+                                .addGroup(jpanel_statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jpanel_statusLayout.createSequentialGroup()
+                                        .addComponent(jLabel10)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jpanel_statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(code_postale_ville_jlabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(numero_nom_rue_jlabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(pays_jlabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addGroup(jpanel_statusLayout.createSequentialGroup()
+                                        .addGroup(jpanel_statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jpanel_statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jpanel_statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(jpanel_statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(type_appartenance_jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(type_bien_jlabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(emplacement_jlabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(type_porte_jlabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jpanel_statusLayout.createSequentialGroup()
+                                        .addGroup(jpanel_statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jpanel_statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jpanel_statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(nom_prenom_proprietaire_jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(nom_peripherique_jlabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(status_acces_jlabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                        .addGap(0, 21, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jpanel_statusLayout.setVerticalGroup(
             jpanel_statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,17 +282,43 @@ public class AccesIHM extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpanel_statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(status_acces_jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(type_bien_jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpanel_statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(device_name_jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(type_appartenance_jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpanel_statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(emplacement_jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpanel_statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(type_porte_jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpanel_statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(numero_nom_rue_jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(code_postale_ville_jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(pays_jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpanel_statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(nom_peripherique_jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jpanel_statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(owner_name_jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(nom_prenom_proprietaire_jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpanel_statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(status_acces_jlabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21))
         );
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 255));
@@ -188,7 +327,7 @@ public class AccesIHM extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 429, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -212,22 +351,74 @@ public class AccesIHM extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(17, 17, 17)
                 .addComponent(jpanel_titre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(separator_jpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jpanel_bouton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jpanel_status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jpanel_status, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        setSize(new java.awt.Dimension(422, 439));
+        setSize(new java.awt.Dimension(422, 599));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void diagnostiquerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_diagnostiquerMouseReleased
+        // Rendre les boutons : "DIAGNOSTIQUER", "OUVRIR" et "FERMER" incatif
+        ouvrir.setEnabled(false);
+        fermer.setEnabled(false);
+        diagnostiquer.setEnabled(false);
+        try {
+            // // Lancer la methode pour le diagnostique 
+            Thread.sleep(5000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(AccesIHM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        // Lancer la methode pour le diagnostique 
+        // Rendre actif les boutons : "DIAGNOSTIQUER", "OUVRIR" et "FERMER"
+        ouvrir.setEnabled(true);
+        fermer.setEnabled(true);
+        diagnostiquer.setEnabled(true);
+    }//GEN-LAST:event_diagnostiquerMouseReleased
+
+    private void ouvrirMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ouvrirMouseReleased
+        try {
+            // Rendre les boutons inactifs jusqu'à avoir une réponse
+            // Rendre les boutons : "DIAGNOSTIQUER", "OUVRIR" et "FERMER" incatif
+            ouvrir.setEnabled(false);
+            fermer.setEnabled(false);
+            diagnostiquer.setEnabled(false);
+            AccesInstructionForSesame acces = new AccesInstructionForSesame(port, identifiant_sesame, key);
+            acces.sendAccesData(OUVRIR);
+            // Après réponse du périphérique, rendre actif les deux boutons : "DIAGNOSTIQUER" et "FERMER"
+            fermer.setEnabled(true);
+            diagnostiquer.setEnabled(true);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(AccesIHM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_ouvrirMouseReleased
+
+    private void fermerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fermerMouseReleased
+        // Rendre les boutons inactifs jusqu'à avoir une réponse
+        // Rendre les boutons : "DIAGNOSTIQUER", "OUVRIR" et "FERMER" incatif
+        ouvrir.setEnabled(false);
+        fermer.setEnabled(false);
+        diagnostiquer.setEnabled(false);
+        try {
+            // Lancer la methode pour le la fermeture
+            Thread.sleep(5000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(AccesIHM.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        // Après réponse du périphérique, rendre actif les deux boutons : "DIAGNOSTIQUER" et "FERMER"
+        ouvrir.setEnabled(true);
+        diagnostiquer.setEnabled(true);
+    }//GEN-LAST:event_fermerMouseReleased
 
     /**
      * @param args the command line arguments
@@ -266,24 +457,114 @@ public class AccesIHM extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel device_name_jlabel;
+    private javax.swing.JLabel code_postale_ville_jlabel;
     private javax.swing.JButton diagnostiquer;
+    private javax.swing.JLabel emplacement_jlabel;
     private javax.swing.JButton fermer;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JPanel jpanel_bouton;
     private javax.swing.JPanel jpanel_status;
     private javax.swing.JPanel jpanel_titre;
+    private javax.swing.JLabel nom_peripherique_jlabel;
+    private javax.swing.JLabel nom_prenom_proprietaire_jlabel;
+    private javax.swing.JLabel numero_nom_rue_jlabel;
     private javax.swing.JButton ouvrir;
-    private javax.swing.JLabel owner_name_jlabel;
+    private javax.swing.JLabel pays_jlabel;
     private java.awt.PopupMenu popupMenu1;
     private java.awt.PopupMenu popupMenu2;
     private javax.swing.JPanel separator_jpanel;
     private javax.swing.JLabel status_acces_jlabel;
     private javax.swing.JLabel titre_fenetre;
+    private javax.swing.JLabel type_appartenance_jlabel;
+    private javax.swing.JLabel type_bien_jlabel;
+    private javax.swing.JLabel type_porte_jlabel;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * Accessors setSelectedId()
+     * @param identifiant
+     */
+    public void setSelectedId(String identifiant){
+        this.identifiant_sesame = identifiant;
+    }
+    
+    /**
+     * Methode update ()
+     */
+    public void update (){
+        boolean flag_linked = false;
+        boolean flag_owner = false;
+        // Check if the identifiant was setted
+        if (identifiant_sesame.length()>0){
+            // Make the deserialization of the table file which is the database of the device
+            File file = new File("identifiant_and_key_table.ser");
+            try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
+                tablea_id_key = (IdentifiantAndKeyTable) in.readObject();
+
+                // Get the key corresponding on the selected id
+                key = tablea_id_key.getCorrespondingKey(identifiant_sesame);
+                device_linking = tablea_id_key.getCorrespondingDevice(identifiant_sesame);
+
+                flag_linked = true;
+
+            }catch(IOException i){
+                flag_linked = false;
+                System.out.println("IOException : " + i.getMessage());
+            }catch(ClassNotFoundException c){
+               System.out.println("DeviceLinkingData class not found");
+               flag_linked =false;
+            }
+            
+            file = new File("owner_information.ser");
+            try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
+                owner = (OwnerInformation) in.readObject();
+
+                // Get the owner information data                
+                flag_owner = true;
+
+            }catch(IOException i){
+                flag_owner = false;
+                System.out.println("IOException : " + i.getMessage());
+            }catch(ClassNotFoundException c){
+               System.out.println("OwnerInformation class not found");
+               flag_owner =false;
+            }
+            
+            if (flag_linked){
+                // Update the device info
+                type_bien_jlabel.setText(device_linking.getTypeDeBien());
+                type_appartenance_jlabel.setText(device_linking.getTypeAppartenance());
+                emplacement_jlabel.setText(device_linking.getEmplacement());
+                type_porte_jlabel.setText(device_linking.getTypeDePorte());
+                numero_nom_rue_jlabel.setText(device_linking.getNumeroRue() + ", " + device_linking.getNomVoie());
+                code_postale_ville_jlabel.setText(device_linking.getCodePostale() + ", " + device_linking.getVille());
+                pays_jlabel.setText(device_linking.getPays());
+                
+                // Update the name of the device
+                nom_peripherique_jlabel.setText(identifiant_sesame);
+                System.out.println("Identifiant = " + identifiant_sesame);
+                System.out.println("Key         = " + key);
+                
+            }
+            
+            if (flag_owner){
+                // Update the owner first and last name
+                nom_prenom_proprietaire_jlabel.setText(owner.getOwnerFirstName() + " " + owner.getOwnerLastName());
+            }
+        }
+        else{
+            // Nothing
+        }
+    }
 }

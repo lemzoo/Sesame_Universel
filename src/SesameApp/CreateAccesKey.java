@@ -24,8 +24,9 @@ public class CreateAccesKey implements java.io.Serializable{
         String [] key_temp = makeKey(number_key);
         for (int i=0; i<key_temp.length; i++){
             key_list.add(key_temp[i]);
-            System.out.println("KeyList["+i+"] = " + key_list.get(i));
+            //System.out.println("KeyList["+i+"] = " + key_list.get(i));
         }
+        System.out.println("Key size = " + key_list.size());
     }
     
     /**
@@ -34,7 +35,7 @@ public class CreateAccesKey implements java.io.Serializable{
      * @return 
      */
     private static String[] makeKey( int number_of_key){
-        System.out.println("Methode makeKey()");
+       //System.out.println("Methode makeKey()");
        String [] key_generated = new String[number_of_key];
        int count=0;
        String key = "";
@@ -62,7 +63,7 @@ public class CreateAccesKey implements java.io.Serializable{
        Random rand = new Random();
 
        while (count < number_of_key){
-           while (key.length()<126){ //126 = 9*14
+           while (key.length()<99){ //126 = 9*14
                 // Generate the random integer
                 random_char_upper = rand.nextInt(char_table_upper.length - 1);
                 random_char_lower = rand.nextInt(char_table_lower.length - 1);
@@ -86,7 +87,7 @@ public class CreateAccesKey implements java.io.Serializable{
            
            // Now add key on the String array
            key_generated[count] = key;
-           System.out.println("Key[" + count + "] = " + key_generated[count]);
+           //System.out.println("Key[" + count + "] = " + key_generated[count]);
            key = "";
            count ++;
        }

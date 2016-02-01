@@ -7,6 +7,10 @@ package SesameApp;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -19,6 +23,8 @@ public class ManageAcces extends JFrame implements ListSelectionListener {
     /**
      * Creates new form ManageAcces
      */
+    private String selected_item="";
+    
     public ManageAcces() {
         initComponents();
         
@@ -45,7 +51,8 @@ public class ManageAcces extends JFrame implements ListSelectionListener {
         liste_peripherique = new java.awt.List();
         separator_jpanel1 = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Gestion des accès");
 
         titre_fenetre.setFont(new java.awt.Font("Monaco", 1, 18)); // NOI18N
         titre_fenetre.setText("Liste des péripheriques rattachés");
@@ -87,6 +94,11 @@ public class ManageAcces extends JFrame implements ListSelectionListener {
         continuer.setBackground(new java.awt.Color(153, 255, 51));
         continuer.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         continuer.setText("Continuer");
+        continuer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                continuerMouseReleased(evt);
+            }
+        });
 
         liste_peripherique.setBackground(new java.awt.Color(153, 153, 255));
         liste_peripherique.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -145,15 +157,25 @@ public class ManageAcces extends JFrame implements ListSelectionListener {
 
         //liste_peripherique.addListSelectionListener(this);
 
-        pack();
+        setSize(new java.awt.Dimension(400, 425));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void liste_peripheriqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_liste_peripheriqueMouseClicked
         // TODO add your handling code here:
-        String selected_item = liste_peripherique.getSelectedItem();
+        selected_item = liste_peripherique.getSelectedItem();
         System.out.println("Vous avez selectionné : " + selected_item);
         continuer.setEnabled(true);
     }//GEN-LAST:event_liste_peripheriqueMouseClicked
+
+    private void continuerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_continuerMouseReleased
+        // TODO add your handling code here:
+        //setSelectedId()
+        AccesIHM acces_ihm = new AccesIHM ();
+        acces_ihm.setSelectedId(selected_item);
+        acces_ihm.update();
+        acces_ihm.setVisible(true);
+    }//GEN-LAST:event_continuerMouseReleased
 
     /**
      * @param args the command line arguments
@@ -205,10 +227,48 @@ public class ManageAcces extends JFrame implements ListSelectionListener {
      * This methode will search all the device linked with this SESAME. 
      */
     public void fillOutTheChoiceList(){
+        System.out.println("<--- BEGIN : fillOutTheChoiceList() --->");
         
-        for (int i=0; i<device_list.length; i++){
-            liste_peripherique.add(device_list[i], i);
+        String [] all_device_id;
+        
+        // Make the deserialization of the table file which is the database of the device
+        IdentifiantAndKeyTable table_id_key = null;
+        boolean flag_extraction =  false;
+        File file = new File("identifiant_and_key_table.ser");
+        try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
+            table_id_key = (IdentifiantAndKeyTable) in.readObject();
+
+            flag_extraction = true;
+
+        }catch(IOException i){
+            flag_extraction = false;
+            System.out.println("IOException : " + i.getMessage());
+        }catch(ClassNotFoundException c){
+           System.out.println("DeviceLinkingData class not found");
+           flag_extraction =false;
         }
+        
+        // Check if the deserialization is done succesffully
+        if (flag_extraction){
+            all_device_id = table_id_key.getAllLinkedDeviceId();
+            if (all_device_id.length>0){
+                // Fit the device array list 
+                for (int i=0; i<all_device_id.length; i++){
+                    liste_peripherique.add(all_device_id[i], i);
+                }
+            }
+            else{
+                for (int i=0; i<device_list.length; i++){
+                    liste_peripherique.add(device_list[i], i);
+                }
+            }
+        }
+        else{
+            for (int i=0; i<device_list.length; i++){
+                liste_peripherique.add(device_list[i], i);
+            }
+        }
+        System.out.println("<--- END : fillOutTheChoiceList() --->");
         //liste_peripherique.addListSelectionListener(this);
     }
 

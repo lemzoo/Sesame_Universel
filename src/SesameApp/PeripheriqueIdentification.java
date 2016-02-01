@@ -5,21 +5,14 @@
  */
 package SesameApp;
 
-import java.awt.Choice;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
@@ -31,9 +24,9 @@ public class PeripheriqueIdentification extends javax.swing.JFrame implements ja
 
     private String type_de_bien; // Maison, Appartement, Entreprise, Magasin, Entrepot, Parking
     private String type_appartenance; // Proprietaire, Locataire, Administrateur, Superviseur.
-    private String emplacement; // Sous-sol, Rez de chaussée, 1er etage, 2em etage, 3em etage.
+    private String emplacement; // Sous-sol, Rez de chaussee, 1er etage, 2em etage, 3em etage.
     private String type_porte; // Entree principale, Porte garage, Entree zone confidentiele
-    private String commentaire_porte; // Porte de ma résidence principale
+    private String commentaire_porte; // Porte de ma residence principale
     private String numero_voie_saisi;
     private String nom_voie_saisi;
     private String code_postale_saisi;
@@ -431,7 +424,7 @@ public class PeripheriqueIdentification extends javax.swing.JFrame implements ja
     private void continuer_jbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continuer_jbuttonActionPerformed
     
         //System.out.println("Day : " + date_naissance_saisi.getDate() + " Month : " + date_naissance_saisi.getMonth() + " Year : " + date_naissance_saisi.getYear());
-        // Lire d'abord les données saisies par l'utilisateur
+        // Lire d'abord les donnees saisies par l'utilisateur
         readData();
         if (statusDataChecked()){
             // Copie all the identification information of the owner on the class to serialize
@@ -492,7 +485,7 @@ public class PeripheriqueIdentification extends javax.swing.JFrame implements ja
                 }
                 //if (check_number_password_typed > 3 || status == false){
                 if (!status){                    
-                    JOptionPane.showMessageDialog(null, "Vous avez dépassé le nombre de\nsaisi de mot de passe autorisé.\nLe service de rattachement est indisponible temporairement" + "Cliquez sur OK pour fermer l'application", "Mot de Passe incorrect", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Vous avez depasse le nombre de\nsaisi de mot de passe autorise.\nLe service de rattachement est indisponible temporairement" + "Cliquez sur OK pour fermer l'application", "Mot de Passe incorrect", JOptionPane.ERROR_MESSAGE);
                     System.out.println("Error password");
                     close();
                 }
@@ -505,7 +498,7 @@ public class PeripheriqueIdentification extends javax.swing.JFrame implements ja
                 }         
             }
             else{
-                System.out.println("Certaines données du périphérique ne sont pas correctes");
+                System.out.println("Certaines donnees du peripherique ne sont pas correctes");
                 System.out.println("Impossible de sauvegarder les informations");
             }
             
@@ -588,18 +581,18 @@ public class PeripheriqueIdentification extends javax.swing.JFrame implements ja
     // End of variables declaration//GEN-END:variables
 
     /*
-     * Cette méthode permet de lire les informations saisies par l'utilisateur après 
-     * avoir validé la requête. 
+     * Cette methode permet de lire les informations saisies par l'utilisateur après 
+     * avoir valide la requête. 
      */
     private void readData(){
         
-        // Recuperation des informations selectionnées via le popup
+        // Recuperation des informations selectionnees via le popup
         type_de_bien = choice_type_bien.getItem(choice_type_bien.getSelectedIndex());
         type_appartenance = choice_type_appartenance.getItem(choice_type_appartenance.getSelectedIndex());
-        emplacement= choice_emplacement.getItem(choice_type_appartenance.getSelectedIndex());
+        emplacement= choice_emplacement.getItem(choice_emplacement.getSelectedIndex());
         type_porte = choice_type_porte.getItem(choice_type_porte.getSelectedIndex());
         
-        // Récuperation de l'adresse complete de l'utilisateur
+        // Recuperation de l'adresse complete de l'utilisateur
         commentaire_porte    = commentaire_jTextField.getText();
         numero_voie_saisi    = numero_voie_jformattedtext.getText();
         nom_voie_saisi       = nom_voie_jformattedtext.getText();
@@ -609,7 +602,7 @@ public class PeripheriqueIdentification extends javax.swing.JFrame implements ja
     }
     
     /*
-     * Cette méthode permet de vérifier si les données saisies sont correctes ou pas.
+     * Cette methode permet de verifier si les donnees saisies sont correctes ou pas.
      */
     private boolean statusDataChecked (){
         return (
@@ -627,8 +620,8 @@ public class PeripheriqueIdentification extends javax.swing.JFrame implements ja
     }
     
     /*
-     * Cette méthode permet de verifier les données saisies
-     * incorrectes et notifie l'utilisateur le champ à vérifier.
+     * Cette methode permet de verifier les donnees saisies
+     * incorrectes et notifie l'utilisateur le champ à verifier.
      */
     private void CheckDataTyped (){
         String notification = "";
@@ -683,7 +676,7 @@ public class PeripheriqueIdentification extends javax.swing.JFrame implements ja
     private static final long serialVersionUID = 42L; 
       
     /**
-     * Methode lister_Type_Bien : Liste les types de bien définis 
+     * Methode lister_Type_Bien : Liste les types de bien definis 
      * 
      */
     private void lister_Type_Bien (){
@@ -699,7 +692,7 @@ public class PeripheriqueIdentification extends javax.swing.JFrame implements ja
     }
     
     /**
-     * Methode lister_Type_Appartenance : Liste les types d'appartenance définis 
+     * Methode lister_Type_Appartenance : Liste les types d'appartenance definis 
      * 
      */
     private void lister_Type_Appartenance (){
@@ -712,7 +705,7 @@ public class PeripheriqueIdentification extends javax.swing.JFrame implements ja
     }
     
     /**
-     * Methode lister_Type_Emplacement : Liste les types d'emplacement définis 
+     * Methode lister_Type_Emplacement : Liste les types d'emplacement definis 
      * 
      */
     private void lister_Type_Emplacement (){
@@ -720,13 +713,13 @@ public class PeripheriqueIdentification extends javax.swing.JFrame implements ja
         choice_emplacement.add("...");
         choice_emplacement.add("1er Sous-sol");
         choice_emplacement.add("2em Sous-sol");
-        choice_emplacement.add("Rez de chaussée");
+        choice_emplacement.add("Rez de chaussee");
         choice_emplacement.add("1er Etage");
         choice_emplacement.add("2em Etage");
         choice_emplacement.add("3em Etage");
         choice_emplacement.add("Local Poubelle");
         choice_emplacement.add("Local Gaz");
-        choice_emplacement.add("Local Electricité");
+        choice_emplacement.add("Local Electricite");
         choice_emplacement.add("Local Chauffage");
         choice_emplacement.add("Local Cave Public");
     }

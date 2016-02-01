@@ -110,6 +110,78 @@ public class DeviceLinkingData implements java.io.Serializable{
         device_identifiant =  identifiant;
     }
     
+    /**
+     * Methode : getTypeDeBien() allow you to get "TYPE DE BIEN"
+     * @return type_de_bien
+     */
+    public String getTypeDeBien(){
+        return this.type_de_bien;
+    }
+    
+    /**
+     * Methode : getTypeAppartenance() allow you to get "TYPE D'APPARTENANCE"
+     * @return type_appartenance
+     */
+    public String getTypeAppartenance(){
+        return this.type_appartenance;
+    }
+    
+    /**
+     * Methode : getEmplacement() allow you to get "EMPLACEMENT"
+     * @return emplacement
+     */
+    public String getEmplacement(){
+        return this.emplacement;
+    }
+    
+    /**
+     * Methode : getTypeDePorte() allow you to get "TYPE DE PORTE"
+     * @return type_porte
+     */
+    public String getTypeDePorte(){
+        return this.type_porte;
+    }
+    
+    /**
+     * Methode : getNumeroVoie() allow you to get "NUMERO DE LA VOIE"
+     * @return numero_voie
+     */
+    public String getNumeroRue(){
+        return Integer.toString(this.numero_voie);
+    }
+    
+    /**
+     * Methode : getNomVoie() allow you to get "NOM DE LA VOIE"
+     * @return nom_voie
+     */
+    public String getNomVoie(){
+        return this.nom_voie;
+    }
+    
+    /**
+     * Methode : getCodePostale() allow you to get "CODE POSTALE"
+     * @return code_postale
+     */
+    public String getCodePostale(){
+        return Integer.toString(this.code_postale);
+    }
+    
+    /**
+     * Methode : getVille() allow you to get "VILLE"
+     * @return ville
+     */
+    public String getVille(){
+        return this.ville;
+    }
+    
+    /**
+     * Methode : getPays() allow you to get "pays"
+     * @return pays
+     */
+    public String getPays(){
+        return this.pays;
+    }
+    
     private static final long serialVersionUID = 42L; 
 
     public static void main(String[] args) {

@@ -297,7 +297,9 @@ public class HomeScreen extends javax.swing.JFrame {
      * @param evt 
      */
     private void accederMouseReleased(java.awt.event.MouseEvent evt) {   
-        // Acceder        
+        // Acceder     
+        ManageAcces manage_acces = new ManageAcces ();
+        manage_acces.setVisible(true);
     } 
 
     /**
