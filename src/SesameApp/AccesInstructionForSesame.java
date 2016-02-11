@@ -5,7 +5,15 @@
  */
 package SesameApp;
 
-import static SesameApp.ConstantsConfiguration.BONJOUR;
+import AccesGUI.*;
+import HomeGUI.*;
+import LinkingGUI.*;
+import SharingGUI.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 /**
  * Class : AccesInstructionForSesame () which manage all instruction about the acces
@@ -16,17 +24,34 @@ public class AccesInstructionForSesame implements ConstantsConfiguration{
     private String id_sesame = "";
     private String key_acces = "";
     SerialPortGPIO port = null;
+    private String acces_state = DEMANDE_ACCES_REFUSEE;
     
     /**
      * Consructor AccesInstructionForSesame() 
+     * @param com_port
      * @param id_sesame_arg
      * @param key_acces_arg 
      */
-    public AccesInstructionForSesame (SerialPortGPIO com_port, String id_sesame_arg, String key_acces_arg){
-       this.id_sesame = id_sesame_arg;
+    public AccesInstructionForSesame (SerialPortGPIO com_port, String key_acces_arg){
+       //this.id_sesame = id_sesame_arg;
        this.key_acces = key_acces_arg;
        port = com_port;
-       //port = new SerialPortGPIO(115200);
+       
+       /* Deserializable of the file containing the information of the owner
+        * to add the indentifier number and password 
+        */          
+        OwnerInformation user = null;
+        File file = new File("owner_information.ser");
+        try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
+            user = (OwnerInformation) in.readObject();
+            this.id_sesame = user.getOwnerIdentifiant();
+
+        }catch(IOException io){
+            System.out.println("Exception de IO : " + io.getMessage());
+        }catch(ClassNotFoundException c){
+           System.err.println("OwnerInformation class not found");
+        }
+
     }
     
     public void sendAccesData(String acces_request) throws InterruptedException{
@@ -113,17 +138,6 @@ public class AccesInstructionForSesame implements ConstantsConfiguration{
             frame_acces[4] = Integer.toString(checksum);
             frame_acces[5] = FIN_ENVOIE_DONNEES_ACCES;
             
-            // Send Data
-            /*port.sendData(BEGIN);
-            Thread.sleep(200);
-            // Send Data
-            //port.sendData(BEGIN);
-            Thread.sleep(200);
-            // Send Data
-            //port.sendData(BEGIN);
-            Thread.sleep(200);*/
-
-            
             // Check the answer of the device in the while loop 
             flag = true;
             tempo = 0;      
@@ -144,6 +158,7 @@ public class AccesInstructionForSesame implements ConstantsConfiguration{
                 if (!flag){
                     System.out.println("|DEMANDE_ACCES_AUTORISEE| sur AccesInstructionForSesame");
                     second_flag = true;
+                    acces_state = DEMANDE_ACCES_AUTORISEE;
                 }
                 tempo = tempo + 10;
                 Thread.sleep(10);
@@ -164,6 +179,18 @@ public class AccesInstructionForSesame implements ConstantsConfiguration{
         
     }
     
+    /**
+     * Methode getAccesState() allow you to get the state of the acces procedure
+     * @return acces_state "AUTHORIZED" or "DENIED"
+     */
+    public String getAccesState(){
+        String state = "";
+        if (acces_state.equals(DEMANDE_ACCES_AUTORISEE))
+            state = SERRURE_DEVEROUILLEE;
+        else
+            state = SERRURE_VERROUILLEE;
+        return state;
+    }
     /**
      * Main methode
      * @param args 

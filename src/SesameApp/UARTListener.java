@@ -1,12 +1,16 @@
 // SESAME
 
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package SesameApp;
+
+import AccesGUI.*;
+import HomeGUI.*;
+import LinkingGUI.*;
+import SharingGUI.*;
 
 import com.pi4j.io.serial.SerialDataEvent;
 import com.pi4j.io.serial.SerialDataListener;
@@ -19,8 +23,8 @@ public class UARTListener implements SerialDataListener, ConstantsConfiguration 
     private String received_data;
 
     public UARTListener(SerialPortGPIO uart){
-            this.uart = uart;
-            received_data = "Raspberry";
+        this.uart = uart;
+        //received_data = "Raspberry";
     }
 
     @Override
@@ -42,7 +46,7 @@ public class UARTListener implements SerialDataListener, ConstantsConfiguration 
              * to save the information about the Owner of the Sesame. 
              */
 
-            uart.setDataBufferReception(received_data);
+            uart.setLastReceivedData(received_data);
             try {
                 uart.analyzeDataReceived();
             } catch (InterruptedException ex) {

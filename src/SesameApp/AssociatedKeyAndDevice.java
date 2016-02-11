@@ -5,6 +5,11 @@
  */
 package SesameApp;
 
+import AccesGUI.*;
+import HomeGUI.*;
+import LinkingGUI.*;
+import SharingGUI.*;
+
 import java.util.Arrays;
 
 /**

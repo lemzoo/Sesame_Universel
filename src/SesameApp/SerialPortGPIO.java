@@ -2,6 +2,11 @@
 
 package SesameApp;
 
+import AccesGUI.*;
+import HomeGUI.*;
+import LinkingGUI.*;
+import SharingGUI.*;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -21,7 +26,7 @@ import java.io.ObjectOutputStream;
 /**
  * This example code demonstrates how to perform serial communications using the Raspberry Pi.
  * 
- * @author Robert Savage
+ * @author Lamine BA by editing Robert Savage source code for the Serial Port Communication
  */
 public class SerialPortGPIO implements ConstantsConfiguration{
     
@@ -47,13 +52,13 @@ public class SerialPortGPIO implements ConstantsConfiguration{
         System.out.println("<=============== SESAME STARTED ===============>");      
         System.out.println("<==============================================>"); 
         this.initialize();
-        reception_buffer = "raspberry";
+        //reception_buffer = "raspberry";
     }
     
     /**
      * Methode : initialize() allows you to initialize the uart port. 
      */
-    public void initialize() {
+    private void initialize() {
         System.out.println("Initialisation du port de communication serie");
         // create an instance of the serial communications class
         serial = SerialFactory.createInstance();
@@ -70,7 +75,7 @@ public class SerialPortGPIO implements ConstantsConfiguration{
      * Methode : setDataBufferReception(String data)
      * @param data
      */
-    public void setDataBufferReception (String data){
+    public void setLastReceivedData (String data){
         this.reception_buffer = data;
     }
     
@@ -80,6 +85,22 @@ public class SerialPortGPIO implements ConstantsConfiguration{
      */
     public String getLastReceivedData (){
         return reception_buffer;
+    }
+    
+    /**
+     * Methode : setBufferReception(String data)
+     * @param data
+     */
+    public void setBufferReception (String data){
+        this.buffer = data;
+    }
+    
+    /**
+     * Methode getBufferReception allow you to get the contains of the uart buffer
+     * @return buffer 
+     */
+    public String getBufferReception (){
+        return buffer;
     }
 
     /**
@@ -135,10 +156,14 @@ public class SerialPortGPIO implements ConstantsConfiguration{
      */
     public void sendData (String data_to_send) throws InterruptedException{
         try {
-            Thread.sleep(200);
-            // write a simple string to the serial transmit buffer
-            serial.writeln(data_to_send);
-            System.out.println("Data sent [" + data_to_send + "]");
+            // Call methode sampleDataToSend() to arrange the data to send by package of 10 char maxi.
+            String [] data_temp = sampleDataToSend(data_to_send);
+            
+            for(int j=0;j<data_temp.length;j++){
+                Thread.sleep(100);
+                System.out.println("Data sent = [" + data_temp[j] + "]");
+                serial.writeln(data_temp[j]);
+            }
         }
         catch(IllegalStateException ex){
         }
@@ -156,10 +181,7 @@ public class SerialPortGPIO implements ConstantsConfiguration{
         String [] data_to_send = formatData(data);
         int i=0;
         while (i<data_to_send.length){
-            String [] data_temp = sampleDataToSend(data_to_send[i]);
-            for(int j=0;j<data_temp.length;j++){
-                sendData(data_temp[j]);
-            }
+            sendData(data_to_send[i]);
             i++;
         }        
     }
@@ -168,7 +190,7 @@ public class SerialPortGPIO implements ConstantsConfiguration{
      * @param data : is the data arranged on the String Array
      * @return data_out : data arranged on the correct format for sending
      */
-    public String [] formatData(String [] data) {
+    private String [] formatData(String [] data) {
         String [] buffer_temp = new String[100];
         String [] data_out;
         // Send the first char to prevent the receiver "B" = Begin
@@ -203,7 +225,7 @@ public class SerialPortGPIO implements ConstantsConfiguration{
      * @param data_to_send
      * @return String[] containing all the sampled data
      */
-    public static String [] sampleDataToSend(String data_to_send){
+    private static String [] sampleDataToSend(String data_to_send){
         String data_to_send_in = data_to_send;
         String [] data_sampled_temp = new String[20];
         String [] data_sampled_out;
@@ -276,110 +298,6 @@ public class SerialPortGPIO implements ConstantsConfiguration{
         return data_sampled_out; 
     }
     
-    /**
-     * Methode : openUartPort()
-     * @return status of the port 
-     */
-    public boolean openUartPort (){
-        boolean port_status = false;
-        if (this.serial.isOpen()){
-            System.out.println("Le port est déjà ouvert");
-            port_status = true;
-        }
-        else{
-            try {
-                // Re-open the UART port
-                serial.open(Serial.DEFAULT_COM_PORT, this.baudrate);
-            }
-            catch(IllegalStateException ex){
-            }
-            if (this.serial.isOpen()){
-                System.out.println("Le port est déjà ouvert");
-                port_status = true;
-            }
-            else{
-                System.out.println("Impossible d'ouvrir le port");
-                port_status = false;
-            }
-        }
-        return port_status;
-    }
-    
-    /**
-     * Methode : closeUartPort()
-     */
-    public void closeUartPort (){
-        if (this.serial.isOpen()){
-            this.serial.shutdown();
-            System.out.println("Fermeture immédiat du port UART");
-        }
-        else{
-            System.out.println("Le port UART est déjà fermé");
-        }
-    }
-    
-    /**
-     * Methode : waitUartPort()
-     * @param time_to_wait : is the time wich the Uart will wait
-     * @throws java.lang.InterruptedException
-     */
-    public void waitUartPort (int time_to_wait) throws InterruptedException{
-        synchronized(this){
-            try {
-                this.wait(time_to_wait);
-            } catch(InterruptedException e) {
-            }
-        }
-        synchronized(this) {
-            this.notify();
-        }
-    } 
-    
-    /**
-     * Methode : analyzeDataReceived => Traitement des données recu
-     * @throws java.lang.InterruptedException
-     */
-    public void analyzeDataReceived() throws InterruptedException{
-
-        switch (reception_buffer) {
-            case BONJOUR:
-            Thread.sleep(100);
-                System.out.println("|BONJOUR| repondu de la part du SESAME DOORS");
-                break;
-                
-            case BEGIN:
-                Thread.sleep(50);
-                System.out.println("Reception de BEGIN");
-                // reset the buffer
-                buffer = "";
-                flag_saving = true;
-                break;
-                
-            case END:
-                Thread.sleep(50);
-                System.out.println("Reception de END");
-                flag_saving = false;
-                this.checkBufferData();
-                break;
-                
-            case KEY_LINK_ENREGISTREE_CORRECTEMENT:
-                Thread.sleep(100);
-                System.out.println("KEY_LINK_ENREGISTREE_CORRECTEMENT recu");
-                boolean flag_end_link = saveAndCloseTheLink();
-                System.out.println("Status du rattachement = " + flag_end_link);
-                break;
-
-            case MERCI:
-                sendData(FIN_DE_LA_COMMUNICATION);
-                System.out.println("Information envoyée avec succès et rajout de l'écouteur");
-                break;
-
-            default:
-                //System.out.println("Trame recu non identifiée dans la sequence de fonctionnement");
-                break;
-        }
-    }
-
     /**
      * Methode extractBufferData() allows you to extract all the data saved in the serial buffer
      * @param string_buffer is the input of the methode which contains the received data
@@ -460,6 +378,107 @@ public class SerialPortGPIO implements ConstantsConfiguration{
         System.out.println("<--- END OF THE extractBufferData() methode --->");
         return data_out; 
     }
+    /**
+     * Methode : openUartPort() allow you to open the uart port if this one is closed
+     * @return status of the port 
+     */
+    public void openUartPort (){
+        if (this.serial.isOpen()){
+            System.out.println("Le port est déjà ouvert");
+            serial.addListener(uart_listener);
+        }
+        else{
+            try {
+                // Re-open the UART port
+                serial.open(Serial.DEFAULT_COM_PORT, this.baudrate);
+                serial.addListener(uart_listener);
+            }
+            catch(IllegalStateException ex){
+                System.err.println("Impossible to re-open the uart port");
+            }
+            
+            if (this.serial.isOpen()){
+                System.out.println("Le port est déjà ouvert");
+            }
+            else{
+                System.err.println("Impossible d'ouvrir le port");
+            }
+        }
+    }
+    
+    /**
+     * Methode : closeUartPort() allow you to close the uart port is this one is already open
+     */
+    public void closeUartPort (){
+        if (this.serial.isOpen()){
+            this.serial.shutdown();
+            System.out.println("Fermeture immédiat du port UART");
+        }
+        else{
+            System.out.println("Le port UART est déjà fermé");
+        }
+    }
+    
+    /**
+     * Methode : waitUartPort()
+     * @param time_to_wait : is the time wich the Uart will wait
+     * @throws java.lang.InterruptedException
+     */
+    public void waitUartPort (int time_to_wait) throws InterruptedException{
+        synchronized(this){
+            try {
+                this.wait(time_to_wait);
+            } catch(InterruptedException e) {
+            }
+        }
+        synchronized(this) {
+            this.notify();
+        }
+    } 
+    
+    /**
+     * Methode : analyzeDataReceived => Traitement des données recu
+     * @throws java.lang.InterruptedException
+     */
+    public void analyzeDataReceived() throws InterruptedException{
+
+        switch (reception_buffer) {
+            case BONJOUR:
+            Thread.sleep(50);
+                System.out.println("|BONJOUR| repondu de la part du SESAME DOORS");
+                break;
+                
+            case BEGIN:
+                Thread.sleep(50);
+                System.out.println("Reception de BEGIN");
+                // reset the buffer
+                buffer = "";
+                flag_saving = true;
+                break;
+                
+            case END:
+                Thread.sleep(50);
+                System.out.println("Reception de END");
+                flag_saving = false;
+                this.checkBufferData();
+                break;
+                
+            case KEY_LINK_ENREGISTREE_CORRECTEMENT:
+                Thread.sleep(50);
+                System.out.println("KEY_LINK_ENREGISTREE_CORRECTEMENT recu");
+                boolean flag_end_link = saveAndCloseTheLink();
+                System.out.println("Status du rattachement = " + flag_end_link);
+                break;
+
+            case MERCI:
+                System.out.println("Information envoyée avec succès et rajout de l'écouteur");
+                sendData(FIN_DE_LA_COMMUNICATION);
+                break;
+
+            default:
+                break;
+        }
+    }
     
     /**
      * Methode : checkSavedData : Traitement des données recu et sauvegarder dans le buffer de reception
@@ -469,7 +488,7 @@ public class SerialPortGPIO implements ConstantsConfiguration{
      * @return flag : if the data is saved correctly
      * @throws java.lang.InterruptedException
      */
-    public boolean checkSavedData(String first_data, String last_data, String [] data) throws InterruptedException{
+    private boolean checkSavedData(String first_data, String last_data, String [] data) throws InterruptedException{
         System.out.println("<--- BEGIN OF THE checkSavedData() methode -->");
         boolean flag = false;
         
@@ -507,10 +526,75 @@ public class SerialPortGPIO implements ConstantsConfiguration{
     
     
     /**
+     * Methode checkReceivedData()
+     * @param data : is the array String which contains the received data by the serial port
+     * @return status=true if the owner information is received correctly. 
+     */
+    private boolean checkReceivedData (String [] data){
+        boolean status = true;
+        if (data.length>0){
+            for (int i=0; i<data.length; i++) {
+                status = status && data[i] != null && !data[i].isEmpty();
+            }
+        } 
+        else{
+            status = false;
+        }
+        
+        return status;
+    }
+
+    /**
+     * Methode isChecksumCorrect()
+     * @param data
+     * @return status=true if the checksum is correct. 
+     * @throws java.lang.InterruptedException 
+     */
+    public boolean isChecksumCorrect (String [] data) throws InterruptedException{
+        boolean status = false;
+        int formule = 0;
+        int CRC = 0;
+                
+        if (checkReceivedData(data) && data.length>0){
+            int number_element = data.length-1;
+            System.out.println("Taille de data = " + number_element);
+            for (int i=0; i<number_element; i++){
+                formule = formule + (number_element -i)*data[i].length();
+            }
+            
+            int checksum = formule - number_element*128;
+            System.out.println("Resultat du checksum = " + checksum);
+            
+            try{
+                CRC = Integer.parseInt(data[number_element]);
+                System.out.println("Checksum conversion to integer done successfully");
+            }
+            catch(NumberFormatException ex){
+                System.out.println("Le checksum recu n'est un pas un entier" + ex.getMessage());
+                CRC = 0;
+            }
+            
+            if ((checksum - CRC)==0){
+                System.out.println("CRC Correct");
+                status = true;
+            }
+            else{
+                System.out.println("CRC wrong");
+                status = false;
+            }
+        }
+        else{
+            status = false;
+        }
+        return status;
+    }
+
+    
+    /**
      * Methode checkBufferData() allows you to verify all the data saved in the buffer
      * @throws java.lang.InterruptedException
      */
-    public void checkBufferData() throws InterruptedException{
+    private void checkBufferData() throws InterruptedException{
         System.out.println("<--- BEGIN OF CALLING checkBufferData() methode --->");
         
         // Get the data saved in the buffer
@@ -546,7 +630,7 @@ public class SerialPortGPIO implements ConstantsConfiguration{
      * @return true if the owner information is correct
      * @throws java.lang.InterruptedException
      */
-    public boolean checkLinkingConfirmation(String [] data) throws InterruptedException {
+    private boolean checkLinkingConfirmation(String [] data) throws InterruptedException {
         boolean flag = false;
         String id_got_from_device = "";
         int formule; 
@@ -648,7 +732,7 @@ public class SerialPortGPIO implements ConstantsConfiguration{
      * @return true if the linking procedure is succesfully ran or false if else where
      * @throws java.lang.InterruptedException
      */
-    public boolean saveAndCloseTheLink() throws InterruptedException{
+    private boolean saveAndCloseTheLink() throws InterruptedException{
         System.out.println("<--- BEGIN : saveAndCloseTheLink --->");
         boolean flag = false;
         boolean flag_linking = false;
