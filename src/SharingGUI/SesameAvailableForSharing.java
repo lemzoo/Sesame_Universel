@@ -218,10 +218,14 @@ public class SesameAvailableForSharing extends JFrame implements ListSelectionLi
         selected_item = liste_sesame_dispo.getSelectedItem();
         System.out.println("Vous avez selectionné l'utilisateur : " + selected_item);
         relancer_jbutton.setEnabled(true);
+        choisir_jbutton.setEnabled(true);
     }//GEN-LAST:event_liste_sesame_dispoMouseClicked
 
     private void choisir_jbuttonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_choisir_jbuttonMouseReleased
         // TODO add your handling code here:
+        // Fermer le port de communication
+        port.closeUartPort();
+        
         IdentifyTheReceiver id_guest = new IdentifyTheReceiver ();
         id_guest.setGuestId(selected_item);
         id_guest.setVisible(true);
@@ -233,6 +237,9 @@ public class SesameAvailableForSharing extends JFrame implements ListSelectionLi
         relancer_jbutton.setEnabled(false);
         choisir_jbutton.setEnabled(false);
         liste_sesame_dispo.setEnabled(false);
+        // Ouvrir le port de communication
+        port.openUartPort();
+        
         try {
             // init the list
             fillOutTheChoiceList();
@@ -350,7 +357,7 @@ public class SesameAvailableForSharing extends JFrame implements ListSelectionLi
         String [] sesame_available;
         boolean flag_scan_time = true;
         // Launch the scan until during second
-        int TEMPO_SCAN_TIME = 2000; 
+        int TEMPO_SCAN_TIME = 5000; 
         int tempo = 0;
         int count_sesame = 0;
         String received_data_new = "NEW";

@@ -28,34 +28,33 @@ import java.util.logging.Logger;
  */
 public class PeripheriqueSummaryInformation extends javax.swing.JFrame implements ConstantsConfiguration{
 
-    private PeripheriqueInformation periph;
-    private SerialPortGPIO port;
+    private DeviceLinkingData device = null;
+    private SerialPortGPIO port = null;
     
     public PeripheriqueSummaryInformation() {
         initComponents();
         
         /* Deserializable of the file containing the information 
            of the periph to add the indentifier number and password */          
-        periph = null;
-        File file = new File("peripherique_information.ser");
+        File file = new File("device_to_link.ser");
         try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
-            periph = (PeripheriqueInformation) in.readObject();
+            device = (DeviceLinkingData) in.readObject();
+            
             System.out.println("Deserialization complete");
             System.out.println("Debut écriture");
-            type_bien_jlabel.setText(periph.getTypeBien());
-            type_appartenance_jlabel.setText(periph.getTypeAppartenance());
-            emplacement_jlabel.setText(periph.getEmplacement());
-            type_porte_jlabel.setText(periph.getTypePorte());
-            commentaire_jTextField.setText(periph.getCommentaire());
-            numero_nom_voie_jlabel.setText(periph.getNumeroRue() + " " + periph.getNomRue());
-            code_postale_ville_jlabel.setText(periph.getCodePostale() + " " + periph.getVille());
-            pays_jlabel.setText(periph.getPays()); 
+            type_bien_jlabel.setText(device.getTypeDeBien());
+            type_appartenance_jlabel.setText(device.getTypeAppartenance());
+            emplacement_jlabel.setText(device.getEmplacement());
+            type_porte_jlabel.setText(device.getTypeDePorte());
+            commentaire_jTextField.setText(device.getCommentaire());
+            numero_nom_voie_jlabel.setText(device.getNumeroRue() + " " + device.getNomVoie());
+            code_postale_ville_jlabel.setText(device.getCodePostale() + " " + device.getVille());
+            pays_jlabel.setText(device.getPays()); 
             System.out.println("Fin écriture");
         }catch(IOException i)
         {
             System.out.println("Return");
-        }catch(ClassNotFoundException c)
-        {
+        }catch(ClassNotFoundException c){
            System.out.println("PeripheriqueInformation class not found");
         }
         
@@ -597,9 +596,9 @@ public class PeripheriqueSummaryInformation extends javax.swing.JFrame implement
         // TODO add your handling code here:
         close();
         PeripheriqueIdentification periph_identification = new PeripheriqueIdentification();
-        periph_identification.setUserChoice(periph.getTypeBien(), periph.getTypeAppartenance(), 
-                                            periph.getEmplacement(), periph.getTypePorte(), periph.getCommentaire(),
-                                            periph.getNumeroRue(), periph.getNomRue(), periph.getCodePostale(), periph.getVille(), periph.getPays());
+        periph_identification.setUserChoice(device.getTypeDeBien(), device.getTypeAppartenance(), 
+                                            device.getEmplacement(), device.getTypeDePorte(), device.getCommentaire(),
+                                            Integer.parseInt(device.getNumeroRue()), device.getNomVoie(), Integer.parseInt(device.getCodePostale()), device.getVille(), device.getPays());
         periph_identification.setVisible(true);
     }//GEN-LAST:event_corriger_infoMouseReleased
 
@@ -683,7 +682,7 @@ public class PeripheriqueSummaryInformation extends javax.swing.JFrame implement
      * about the owner of the SESAME. 
      * @return data[] which type is String
      */ 
-    public String [] arrangeOwnerInformationForLinking (){
+    private String [] arrangeOwnerInformationForLinking (){
         String [] owner_data = null;
         String [] data = null;
         boolean flag_extraction = false;
@@ -717,9 +716,6 @@ public class PeripheriqueSummaryInformation extends javax.swing.JFrame implement
 
             // Put the linking information 
             System.arraycopy(owner_data, 0, data, 1, size_data_owner);
-            /*for (int i=0; i<owner_data.length; i++){
-                data[i+1] = owner_data[i];
-            }*/
 
             // Create the checksum
             int formule = 0; 
@@ -747,44 +743,15 @@ public class PeripheriqueSummaryInformation extends javax.swing.JFrame implement
      * about the connection between the SESAME and Device. 
      * @return data[] which type is String
      */ 
-    public String [] arrangeLinkingData (){
-        String [] linking_data = new String[10];
+    private String [] arrangeLinkingData (){
+        String [] linking_data = device.getDeviceLinkingData();
         String [] data = new String[13];
-
-        linking_data[0] = periph.getTypeBien();
-        linking_data[1] = periph.getTypeAppartenance();
-        linking_data[2] = periph.getEmplacement();
-        linking_data[3] = periph.getTypePorte();
-        linking_data[4] = periph.getCommentaire();
-        linking_data[5] = Integer.toString(periph.getNumeroRue());
-        linking_data[6] = periph.getNomRue();
-        linking_data[7] = Integer.toString(periph.getCodePostale());
-        linking_data[8] = periph.getVille();
-        linking_data[9] = periph.getPays(); 
-
-        // Create the DeviceLinkingData
-        DeviceLinkingData device = new DeviceLinkingData(linking_data);
-        // Make the Serizlization
-        File file = new File("linking_data.ser");
-        try{
-            try (FileOutputStream fileOut = new FileOutputStream(file); ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
-                out.writeObject(device);
-                System.out.println("linking_data.ser file is created correcly");
-            }
-        }catch(IOException i)
-        {
-            System.out.println("Exception " + i.getMessage());
-        }
-        System.out.println("Object Device is created");
+        
         // Send the first frame to inform the device that the Sesame is ready the send all the data about the linking
         data[0] = DEBUT_ENVOI_INFORMATION_RATTACHEMENT;
         
-        // Put the linking information 
-        for (int i=0; i<linking_data.length; i++){
-            data[i+1] = linking_data[i];
-        }
         System.out.println("the buffer of the linking data is Filled out correctly");
-        //System.arraycopy(linking_data, 0, data, 1, linking_data.length);
+        System.arraycopy(linking_data, 0, data, 1, linking_data.length);
 
         // Create the checksum
         int formule = 0; 

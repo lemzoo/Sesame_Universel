@@ -98,6 +98,26 @@ public interface ConstantsConfiguration {
     
     final String INFORMATION_ACCREDITE_ENREGISTRE_CORRECTEMENT = "IAEC_03";
     final String INFORMATION_ACCREDITE_DONNEES_ERONNEES        = "IADE_03";
+    
+    final String DEMANDE_INFORMATION_SESAME_DOORS      = "DESD_03";
+    
+    final String DEBUT_ENVOIE_INFORMATION_SESAME_DOORS = "DEISD_03";
+    final String FIN_ENVOIE_INFORMATION_SESAME_DOORS   = "FEISD_03";
+    
+    final String INFORMATION_SESAME_DOORS_ENREGISTRE_CORRECTEMENT = "ISDEC_03";
+    final String INFORMATION_SESAME_DOORS_DONNEES_ERONNEES        = "ISDDE_03";
+    
+    final String DEBUT_ENVOIE_KEY_SHARE = "DEKS_03";
+    final String FIN_ENVOIE_KEY_SHARE   = "FEKS_03";
+    
+    final String KEY_SHARE_ENREGISTREE_CORRECTEMENT = "KSEC_03";
+    final String KEY_SHARE_DONNEES_ERONNEES   = "KSDE_03";
+    
+    final String DEBUT_ENVOIE_CONFIRMATION_PARTAGE = "DECP_03";
+    final String FIN_ENVOIE_CONFIRMATION_PARTAGE   = "FECP_03";
+    
+    final String DEMANDE_CONFIRMATION_DE_PARTAGE = "DCDP_03";
+    
     //<=========================== FIN PARTAGE ACCES =========================>//
     
     final String AUTRE_DEMANDE = "AD_01";

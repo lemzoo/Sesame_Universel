@@ -193,7 +193,7 @@ public class DeviceAvailableForSharing extends JFrame implements ListSelectionLi
     private void choisir_jbuttonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_choisir_jbuttonMouseReleased
         // TODO add your handling code here:
         InfoAboutSelectedDevice selected_dev = new InfoAboutSelectedDevice ();
-        selected_dev.setSelectedId(selected_item);
+        selected_dev.setSelectedIdDevice(selected_item);
         selected_dev.update();
         selected_dev.setVisible(true);
     }//GEN-LAST:event_choisir_jbuttonMouseReleased
@@ -271,7 +271,7 @@ public class DeviceAvailableForSharing extends JFrame implements ListSelectionLi
         // Make the deserialization of the table file which is the database of the device
         IdentifiantAndKeyTable table_id_key = null;
         boolean flag_extraction =  false;
-        File file = new File("identifiant_and_key_table.ser");
+        File file = new File("/home/pi/Desktop/identifiant_and_key_table.ser");
         try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
             table_id_key = (IdentifiantAndKeyTable) in.readObject();
 

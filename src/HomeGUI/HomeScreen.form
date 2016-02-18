@@ -29,7 +29,7 @@
                 <Property name="text" type="java.lang.String" value="Afficher les infos Administrateur"/>
               </Properties>
               <Events>
-                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="afficherInfoAdministrateur_jMenuItemMouseReleased"/>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="afficherInfoAdministrateurMouseReleased"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="everygates_jMenuItem">
@@ -46,23 +46,22 @@
               <Font name="Lucida Grande" size="14" style="1"/>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="fonctions_jMenuMouseReleased"/>
-          </Events>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="acceder_jMenuItem">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Acceder"/>
               </Properties>
               <Events>
-                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="acceder_jMenuItemMouseReleased"/>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="acceder_jMenuItemActionPerformed"/>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="accederMouseReleased"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="partager_jMenuItem">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Partager les acc&#xe8;s"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="partagerMouseReleased"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="supprimer_jMenuItem">
               <Properties>
@@ -83,17 +82,13 @@
               <Font name="Lucida Grande" size="14" style="1"/>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="systeme_jMenuActionPerformed"/>
-          </Events>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="redemarrer_jMenuItem">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Redemarrer"/>
               </Properties>
               <Events>
-                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="redemarrer_jMenuItemMouseReleased"/>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="redemarrer_jMenuItemActionPerformed"/>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="redemarrerMouseReleased"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mettreEnVeille_jMenuItem">
@@ -101,7 +96,7 @@
                 <Property name="text" type="java.lang.String" value="Mettre en veille"/>
               </Properties>
               <Events>
-                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mettreEnVeille_jMenuItemMouseReleased"/>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="mettreEnVeilleMouseReleased"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="arreter_jMenuItem">
@@ -109,9 +104,7 @@
                 <Property name="text" type="java.lang.String" value="Arreter"/>
               </Properties>
               <Events>
-                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="arreter_jMenuItemMouseReleased"/>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="arreter_jMenuItemMouseClicked"/>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="arreter_jMenuItemActionPerformed"/>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="arreterMouseReleased"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -183,7 +176,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
                   <Component id="owner_jLabel" min="-2" pref="237" max="-2" attributes="0"/>
-                  <EmptySpace pref="79" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
@@ -254,19 +247,19 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="101" max="-2" attributes="0"/>
+              <Group type="102" attributes="0">
+                  <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                  <Component id="jLabel2" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="29" max="32767" attributes="0"/>
+                  <EmptySpace pref="20" max="32767" attributes="0"/>
                   <Component id="jLabel2" min="-2" pref="29" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -277,7 +270,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Lucida Grande" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Bienvenu dans le Sesame"/>
+            <Property name="text" type="java.lang.String" value="Bienvenu dans le Sesame Administrateur"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>

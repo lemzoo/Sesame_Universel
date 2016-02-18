@@ -433,25 +433,15 @@ public class PeripheriqueIdentification extends javax.swing.JFrame implements ja
         readData();
         if (statusDataChecked()){
             // Copie all the identification information of the owner on the class to serialize
-            PeripheriqueInformation periph = new PeripheriqueInformation();
-            periph.setTypeBien(type_de_bien);
-            periph.setTypeAppartenance(type_appartenance);
-            periph.setEmplacement(emplacement);
-            periph.setTypePorte(type_porte);
-            periph.setCommentaire(commentaire_porte);
-            periph.setNumeroRue(Integer.parseInt(numero_voie_saisi));
-            periph.setNomRue(nom_voie_saisi);
-            periph.setCodePostale(Integer.parseInt(code_postale_saisi));
-            periph.setVille(ville_saisi);
-            periph.setPays(pays_saisi);
-            System.out.println("Pays : " + periph.getPays());
+            String [] device_data = this.arrangeDeviceData();
+            DeviceLinkingData device = new DeviceLinkingData(device_data);
             
-            if (periph.isPeripheriqueInformationCorrect()){
+            if (device.isDeviceDataCorrect()){
                 // Make the serialization to save the peripherique information on a ser file
-                File file = new File("peripherique_information.ser");
+                File file = new File("device_to_link.ser");
                 System.out.println("Debut de la serialization des informations du peripheriqu");
                 try(FileOutputStream fileOut = new FileOutputStream(file); ObjectOutputStream out = new ObjectOutputStream(fileOut)){
-                    out.writeObject(periph);
+                    out.writeObject(device);
                     out.close();
                     System.out.println("The Serialization of the peripherique information is done succesffully");
                 }catch(IOException i)
@@ -461,7 +451,7 @@ public class PeripheriqueIdentification extends javax.swing.JFrame implements ja
               
                 /* Deserializable of the file containing the information of the owner
                    to add the indentifier number and password */          
-                OwnerInformation owner = null;
+                /*OwnerInformation owner = null;
                 file = new File("owner_information.ser");
                 try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
                     owner = (OwnerInformation) in.readObject();
@@ -500,7 +490,12 @@ public class PeripheriqueIdentification extends javax.swing.JFrame implements ja
                     PeripheriqueSummaryInformation periph_summary = new PeripheriqueSummaryInformation();
                     periph_summary.setVisible(true);
                     System.out.println("Lancement de la fenertre");
-                }         
+                }*/ 
+                
+                close();
+                PeripheriqueSummaryInformation periph_summary = new PeripheriqueSummaryInformation();
+                periph_summary.setVisible(true);
+                System.out.println("Lancement de la fenertre");
             }
             else{
                 System.out.println("Certaines donnees du peripherique ne sont pas correctes");
@@ -685,8 +680,6 @@ public class PeripheriqueIdentification extends javax.swing.JFrame implements ja
      * 
      */
     private void lister_Type_Bien (){
-      
-        choice_type_bien.add("...");
         choice_type_bien.add("Maison");
         choice_type_bien.add("Appartement");
         choice_type_bien.add("Entreprise");
@@ -694,6 +687,7 @@ public class PeripheriqueIdentification extends javax.swing.JFrame implements ja
         choice_type_bien.add("Entrepot");
         choice_type_bien.add("Parking");
         choice_type_bien.add("Autre");
+        choice_type_bien.add("...");
     }
     
     /**
@@ -702,11 +696,11 @@ public class PeripheriqueIdentification extends javax.swing.JFrame implements ja
      */
     private void lister_Type_Appartenance (){
       
-        choice_type_appartenance.add("...");
         choice_type_appartenance.add("Proprietaire");
         choice_type_appartenance.add("Locataire");
         choice_type_appartenance.add("Administrateur");
         choice_type_appartenance.add("Superviseur");
+        choice_type_appartenance.add("...");
     }
     
     /**
@@ -714,11 +708,9 @@ public class PeripheriqueIdentification extends javax.swing.JFrame implements ja
      * 
      */
     private void lister_Type_Emplacement (){
-      
-        choice_emplacement.add("...");
+        choice_emplacement.add("Rez de chaussee");
         choice_emplacement.add("1er Sous-sol");
         choice_emplacement.add("2em Sous-sol");
-        choice_emplacement.add("Rez de chaussee");
         choice_emplacement.add("1er Etage");
         choice_emplacement.add("2em Etage");
         choice_emplacement.add("3em Etage");
@@ -727,6 +719,7 @@ public class PeripheriqueIdentification extends javax.swing.JFrame implements ja
         choice_emplacement.add("Local Electricite");
         choice_emplacement.add("Local Chauffage");
         choice_emplacement.add("Local Cave Public");
+        choice_emplacement.add("...");
     }
     
     /**
@@ -734,11 +727,32 @@ public class PeripheriqueIdentification extends javax.swing.JFrame implements ja
      * 
      */
     private void lister_Type_Porte (){  
-        choice_type_porte.add("...");
         choice_type_porte.add("Entree Principale");
         choice_type_porte.add("Porte Appartement");
         choice_type_porte.add("Entree Zone confidentielle");
         choice_type_porte.add("Porte Garage");
+        choice_type_porte.add("...");
+    }
+    
+    /**
+     * Methode : arrangeDeviceData() arrange the data about the device which is in the linking process
+     * @return 
+     */
+    private String [] arrangeDeviceData(){
+        String [] data = new String[10];
+        
+        data[0] = type_de_bien;
+        data[1] = type_appartenance;
+        data[2] = emplacement;
+        data[3] = type_porte;
+        data[4] = commentaire_porte;
+        data[5] = numero_voie_saisi;
+        data[6] = nom_voie_saisi;
+        data[7] = code_postale_saisi;
+        data[8] = ville_saisi;
+        data[9] = pays_saisi;
+
+        return data;
     }
     
     /**

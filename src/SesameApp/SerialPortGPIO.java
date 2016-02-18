@@ -1,4 +1,4 @@
-//SESAME
+//SESAME SHARER
 
 package SesameApp;
 
@@ -160,7 +160,7 @@ public class SerialPortGPIO implements ConstantsConfiguration{
             String [] data_temp = sampleDataToSend(data_to_send);
             
             for(int j=0;j<data_temp.length;j++){
-                Thread.sleep(100);
+                Thread.sleep(200);
                 System.out.println("Data sent = [" + data_temp[j] + "]");
                 serial.writeln(data_temp[j]);
             }
@@ -734,34 +734,62 @@ public class SerialPortGPIO implements ConstantsConfiguration{
      */
     private boolean saveAndCloseTheLink() throws InterruptedException{
         System.out.println("<--- BEGIN : saveAndCloseTheLink --->");
-        boolean flag = false;
-        boolean flag_linking = false;
-        boolean flag_linked = false;
+        
+        boolean flag_extract_owner = false;
+        boolean flag_extract_device_linking = false; 
+        
+        boolean flag_creating = false;
+        boolean flag_adding_table = false;
+        boolean flag_end = false;
+        
+        OwnerInformation owner = null;
         DeviceLinkingData device_linking = null;
         DeviceLinkedData device_linked = null;
-        IdentifiantAndKeyTable table_temp = null; 
+        
+        IdentifiantAndKeyTable table_temp = null;
+        
         String new_identifiant = identifiant;
         String new_key = key;
         
-        File file = new File("linking_data.ser");
-        
-        // Make the Deserialization of linking_data.ser
+        // Make the Deserialization of owner_information.ser
+        File file = new File("owner_information.ser");
         try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
-            device_linking = (DeviceLinkingData) in.readObject();
-            
-            // Create a new object containing device_info,id and key
-            device_linked = new DeviceLinkedData(device_linking, new_identifiant, new_key);
-            flag_linking = true;
-            
+            owner = (OwnerInformation) in.readObject();
+            flag_extract_owner = true;             
         }catch(IOException i){
-            flag_linking = false;
+            flag_extract_owner = false;
             System.out.println("IOException : " + i.getMessage());
         }catch(ClassNotFoundException c){
-           System.out.println("DeviceLinkingData class not found");
-           flag_linking =false;
+            flag_extract_owner = false;
+            System.out.println("OwnerInformation class not found");
+        }
+        
+
+        // Make the Deserialization of linking_data.ser
+        file = new File("device_to_link.ser");
+        try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
+            device_linking = (DeviceLinkingData) in.readObject();
+            flag_extract_device_linking = true;             
+        }catch(IOException i){
+            flag_extract_device_linking = false;
+            System.out.println("IOException : " + i.getMessage());
+        }catch(ClassNotFoundException c){
+            flag_extract_device_linking = false;
+            System.out.println("DeviceLinkingData class not found");
+        }
+        
+        // Check if the two files are extracted correctly, then continue the process
+        if (flag_extract_owner && flag_extract_device_linking){
+            // Create a new object containing device_info,id and key
+            device_linked = new DeviceLinkedData(owner, device_linking, new_identifiant, new_key);
+            flag_creating = true;
+        }
+        else{
+            flag_creating = false;
         }
 
-        if (flag_linking){
+        // if the object is created correctly then continue
+        if (flag_creating){
             // Make the deserialization of the table file which is the database of the device
             file = new File("identifiant_and_key_table.ser");
             try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
@@ -772,39 +800,41 @@ public class SerialPortGPIO implements ConstantsConfiguration{
                 System.out.println("Content of the table after");
                 System.out.println(table_temp);
 
-                flag_linked = true;
+                flag_adding_table = true;
 
             }catch(IOException i){
-                flag_linked = false;
+                flag_adding_table = false;
                 System.out.println("IOException : " + i.getMessage());
             }catch(ClassNotFoundException c){
-               System.out.println("DeviceLinkingData class not found");
-               flag_linked =false;
+                flag_adding_table =false;
+                System.out.println("DeviceLinkingData class not found");
             }
         }
         else{
             // Nothing
+            flag_adding_table = false;
         }
-        flag = flag_linking && flag_linked;
         
         // if the deserialization of the linking file is done succesfully and the table id and key also done succesfully
-        if (flag){
+        if (flag_creating && flag_adding_table){
             // Make the serialization of the table id and key file to save the new linked device
             // Make the serialization to save the new added device on the table
             file = new File("identifiant_and_key_table.ser");
             try(FileOutputStream fileOut = new FileOutputStream(file); ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
                 out.writeObject(table_temp);
+                flag_end = true;
                 // End of the Serialization for IdentifiantAndKeyTable
                 System.out.println("Serialized of the new IdentifiantAndKeyTable is saved in identifiant_and_key_table.ser");
 
             }catch(IOException io){
+                flag_end = false;
                 System.out.println("Exception for IdentifiantAndKeyTable : " + io.getMessage());
                 System.out.println("Serialized of the new IdentifiantAndKeyTable is not done : check error");
             }
         }
         
-        System.out.println("<--- END   : saveAndCloseTheLink --->");
+        System.out.println("<--- END   : saveAndCloseTheShare --->");
         
-        return flag;
+        return flag_end;
     }
 }

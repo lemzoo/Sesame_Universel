@@ -61,7 +61,7 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="15" max="32767" attributes="0"/>
               <Component id="jpanel_titre" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="separator_jpanel" min="-2" max="-2" attributes="0"/>
@@ -136,9 +136,9 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <Component id="precedent" min="-2" pref="157" max="-2" attributes="0"/>
+                  <Component id="precedent" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="partager" min="-2" pref="157" max="-2" attributes="0"/>
+                  <Component id="partager" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -148,8 +148,8 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="precedent" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
-                      <Component id="partager" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                      <Component id="precedent" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="partager" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -165,7 +165,6 @@
           </Properties>
           <Events>
             <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="partagerMouseReleased"/>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="partagerActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="precedent">

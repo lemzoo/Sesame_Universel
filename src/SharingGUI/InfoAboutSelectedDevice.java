@@ -14,8 +14,10 @@ import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 /**
  *
@@ -26,7 +28,7 @@ public class InfoAboutSelectedDevice extends javax.swing.JFrame implements Const
     /**
      * Creates new form AccesIHM which contains all information about the device and owner
      */
-    private String identifiant_sesame = "";
+    private String device_id = "";
     private String key = "";
     private IdentifiantAndKeyTable tablea_id_key = null;
     private DeviceLinkingData device_linking = null;
@@ -35,7 +37,6 @@ public class InfoAboutSelectedDevice extends javax.swing.JFrame implements Const
     
     public InfoAboutSelectedDevice() {
         initComponents();
-        this.identifiant_sesame = "";
     }
 
     /**
@@ -123,11 +124,6 @@ public class InfoAboutSelectedDevice extends javax.swing.JFrame implements Const
                 partagerMouseReleased(evt);
             }
         });
-        partager.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                partagerActionPerformed(evt);
-            }
-        });
 
         precedent.setBackground(new java.awt.Color(255, 204, 204));
         precedent.setText("Précédent");
@@ -142,9 +138,9 @@ public class InfoAboutSelectedDevice extends javax.swing.JFrame implements Const
         jpanel_boutonLayout.setHorizontalGroup(
             jpanel_boutonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpanel_boutonLayout.createSequentialGroup()
-                .addComponent(precedent, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(precedent)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(partager, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(partager)
                 .addContainerGap())
         );
         jpanel_boutonLayout.setVerticalGroup(
@@ -152,8 +148,8 @@ public class InfoAboutSelectedDevice extends javax.swing.JFrame implements Const
             .addGroup(jpanel_boutonLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jpanel_boutonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(precedent, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(partager, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(precedent)
+                    .addComponent(partager)))
         );
 
         jLabel3.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
@@ -299,7 +295,7 @@ public class InfoAboutSelectedDevice extends javax.swing.JFrame implements Const
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(15, Short.MAX_VALUE)
                 .addComponent(jpanel_titre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(separator_jpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -318,22 +314,27 @@ public class InfoAboutSelectedDevice extends javax.swing.JFrame implements Const
 
     private void partagerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_partagerMouseReleased
         // Appel de la classe Scan Sesame around
-        SesameAvailableForSharing sesame_avai = new SesameAvailableForSharing();
+        // Create the file for the device and make the Serialization for DeviceLinking 
+        File file_temp = new File("device_to_share.ser");
+        try(FileOutputStream fileOut = new FileOutputStream(file_temp); ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+            out.writeObject(device_linking);
+            System.out.println("Data about the device to share is arranged succesffuly");
+        }catch(IOException i){
+            System.out.println("Exception for DeviceLinking");
+        }
+        // End of the Serialization for DeviceLinking
         this.close();
+        SesameAvailableForSharing sesame_avai = new SesameAvailableForSharing();
         sesame_avai.setVisible(true);
     }//GEN-LAST:event_partagerMouseReleased
 
     private void precedentMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_precedentMouseReleased
         // Retourner dans la fenêtre DeviceAvailableForSharing
-        DeviceAvailableForSharing dev = new DeviceAvailableForSharing();
         this.close();
+        DeviceAvailableForSharing dev = new DeviceAvailableForSharing();
         dev.setVisible(true);
         
     }//GEN-LAST:event_precedentMouseReleased
-
-    private void partagerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_partagerActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_partagerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -407,8 +408,8 @@ public class InfoAboutSelectedDevice extends javax.swing.JFrame implements Const
      * Accessors setSelectedId()
      * @param identifiant
      */
-    public void setSelectedId(String identifiant){
-        this.identifiant_sesame = identifiant;
+    public void setSelectedIdDevice(String identifiant){
+        this.device_id = identifiant;
     }
     
     /**
@@ -418,14 +419,18 @@ public class InfoAboutSelectedDevice extends javax.swing.JFrame implements Const
         boolean flag_linked = false;
         boolean flag_owner = false;
         // Check if the identifiant was setted
-        if (identifiant_sesame.length()>0){
+        if (device_id.length()>0){
             // Make the deserialization of the table file which is the database of the device
-            File file = new File("identifiant_and_key_table.ser");
+            File file = new File("/home/pi/Desktop/identifiant_and_key_table.ser");
             try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
                 tablea_id_key = (IdentifiantAndKeyTable) in.readObject();
 
                 // Get the device information 
-                device_linking = tablea_id_key.getCorrespondingDevice(identifiant_sesame);
+                device_linking = tablea_id_key.getCorrespondingDevice(device_id);
+                // Set the identifiant of the Device before you make the serialization 
+                device_linking.setDeviceIdentifiant(device_id);
+                System.out.println("<=== Data about the device to share ===>");
+                System.out.println(device_linking);
 
                 flag_linked = true;
 
@@ -463,7 +468,7 @@ public class InfoAboutSelectedDevice extends javax.swing.JFrame implements Const
                 pays_jlabel.setText(device_linking.getPays());
                 
                 // Update the name of the device
-                nom_peripherique_jlabel.setText(identifiant_sesame);                
+                nom_peripherique_jlabel.setText(device_id);  
             }
             
             if (flag_owner){

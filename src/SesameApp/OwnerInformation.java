@@ -28,6 +28,14 @@ public class OwnerInformation extends UserIdentification implements java.io.Seri
                   String.valueOf(super.getUserPhoneNumber().charAt(7)) + String.valueOf(super.getUserPhoneNumber().charAt(9));
     }
     
+    public OwnerInformation (String [] data){
+        super(data);
+        password = new JPasswordField(null,"a",0);
+        user_id = String.valueOf(super.getUserFirstName().charAt(0)) + String.valueOf(super.getUserLastName().charAt(0)) +
+                  String.valueOf(super.getUserBirthdayDate().getDate())+ String.valueOf(super.getUserBirthdayDate().getMonth()) + String.valueOf(super.getUserBirthdayDate().getYear()).charAt(3)+
+                  String.valueOf(super.getUserPhoneNumber().charAt(7)) + String.valueOf(super.getUserPhoneNumber().charAt(9));
+    }
+    
     @Override
     public String toString(){
         String chaine = super.toString();

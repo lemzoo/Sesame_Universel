@@ -33,7 +33,8 @@ import javax.swing.JOptionPane;
  *
  * @author LamineBA
  */
-public class IdentifyTheReceiver extends javax.swing.JFrame implements java.io.Serializable{
+public class IdentifyTheReceiver extends javax.swing.JFrame implements java.io.Serializable {
+
     private String id_sesame_guest;
     private String s_pseudo;
     private String s_raison;
@@ -41,9 +42,11 @@ public class IdentifyTheReceiver extends javax.swing.JFrame implements java.io.S
     private Date date_debut;
     private Date date_fin;
     private Date date_du_jour = null; // your date
-        
+
     /**
-     * Creates new form ThirdWindows
+     * Classe "IdentifyTheReceiver" allow you to identify the receiver of the
+     * share and to set the date of the sharing acces. Creates new form
+     * ThirdWindows
      */
     public IdentifyTheReceiver() {
         initComponents();
@@ -52,13 +55,13 @@ public class IdentifyTheReceiver extends javax.swing.JFrame implements java.io.S
         Calendar cal = Calendar.getInstance();
         cal.setTime(date_du_jour);
         LocalDate localDate = date_du_jour.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        int year  = localDate.getYear()-1900;
-        int month = localDate.getMonthValue()-1;
-        int day   = localDate.getDayOfMonth();
+        int year = localDate.getYear();
+        int month = localDate.getMonthValue();
+        int day = localDate.getDayOfMonth();
         date_du_jour.setDate(day);
         date_du_jour.setMonth(month);
         date_du_jour.setYear(year);
-        System.out.println("Date = " + date_du_jour);        
+        System.out.println("Date du jour = " + date_du_jour);
     }
 
     /**
@@ -88,8 +91,8 @@ public class IdentifyTheReceiver extends javax.swing.JFrame implements java.io.S
         relation_choice = new java.awt.Choice();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        continuer_jbutton = new javax.swing.JToggleButton();
         precedent_jbutton = new javax.swing.JToggleButton();
+        continuer_jbutton = new javax.swing.JToggleButton();
 
         decliner_jbutton.setBackground(new java.awt.Color(255, 0, 0));
         decliner_jbutton.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
@@ -124,16 +127,15 @@ public class IdentifyTheReceiver extends javax.swing.JFrame implements java.io.S
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(43, 43, 43))
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
+                .addGap(30, 30, 30))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 12, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(51, 0, 255));
@@ -142,7 +144,7 @@ public class IdentifyTheReceiver extends javax.swing.JFrame implements java.io.S
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 379, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,26 +187,28 @@ public class IdentifyTheReceiver extends javax.swing.JFrame implements java.io.S
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(raison_partage, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addGap(102, 102, 102)
-                            .addComponent(pseudo_jformattedtext))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel4)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(date_debut_partage, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel6)
-                            .addGap(32, 32, 32)
-                            .addComponent(relation_choice, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addComponent(jLabel5)
-                            .addGap(39, 39, 39)
-                            .addComponent(date_fin_partage, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(raison_partage)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(pseudo_jformattedtext, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5)
+                                    .addComponent(jLabel6))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(date_fin_partage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(date_debut_partage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(relation_choice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,21 +220,19 @@ public class IdentifyTheReceiver extends javax.swing.JFrame implements java.io.S
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(raison_partage, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(14, 14, 14)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(jLabel6))
-                    .addComponent(relation_choice, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(relation_choice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel4)
-                    .addComponent(date_debut_partage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(date_debut_partage, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(date_fin_partage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         jPanel4.setBackground(new java.awt.Color(51, 0, 255));
@@ -239,22 +241,12 @@ public class IdentifyTheReceiver extends javax.swing.JFrame implements java.io.S
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 379, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 10, Short.MAX_VALUE)
         );
-
-        continuer_jbutton.setBackground(new java.awt.Color(204, 255, 204));
-        continuer_jbutton.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        continuer_jbutton.setText("Continuer");
-        continuer_jbutton.setSize(new java.awt.Dimension(140, 30));
-        continuer_jbutton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                continuer_jbuttonActionPerformed(evt);
-            }
-        });
 
         precedent_jbutton.setBackground(new java.awt.Color(255, 153, 153));
         precedent_jbutton.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
@@ -266,6 +258,16 @@ public class IdentifyTheReceiver extends javax.swing.JFrame implements java.io.S
             }
         });
 
+        continuer_jbutton.setBackground(new java.awt.Color(204, 255, 204));
+        continuer_jbutton.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        continuer_jbutton.setText("Continuer");
+        continuer_jbutton.setSize(new java.awt.Dimension(140, 30));
+        continuer_jbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                continuer_jbuttonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -273,15 +275,15 @@ public class IdentifyTheReceiver extends javax.swing.JFrame implements java.io.S
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(precedent_jbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
                 .addComponent(continuer_jbutton)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(continuer_jbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(precedent_jbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(precedent_jbutton)
+                .addComponent(continuer_jbutton))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -289,41 +291,37 @@ public class IdentifyTheReceiver extends javax.swing.JFrame implements java.io.S
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
-        setSize(new java.awt.Dimension(435, 390));
+        setSize(new java.awt.Dimension(397, 426));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void decliner_jbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decliner_jbuttonActionPerformed
         //close();
-        
+
     }//GEN-LAST:event_decliner_jbuttonActionPerformed
 
     private void accepter_jbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accepter_jbuttonActionPerformed
@@ -335,55 +333,54 @@ public class IdentifyTheReceiver extends javax.swing.JFrame implements java.io.S
     }//GEN-LAST:event_precedent_jbuttonActionPerformed
 
     private void continuer_jbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continuer_jbuttonActionPerformed
-    
+
         // Lire d'abord les données saisies par l'utilisateur
         readData();
-        if (isDataTypedValide()){
-            if (isTypedDataCorrect()){
+        if (isDataTypedValide()) {
+            if (isTypedDataCorrect()) {
                 System.out.println("Correct");
                 // Arrange the data about the guest sharing 
-                String [] guest_data = new String[10];
+                String[] guest_data = new String[10];
                 guest_data[0] = id_sesame_guest;
                 guest_data[1] = s_pseudo;
                 guest_data[2] = s_raison;
                 guest_data[3] = s_relation;
-                
+
                 // Date which the shared will begin
                 guest_data[4] = Integer.toString(date_debut.getDate());
                 guest_data[5] = Integer.toString(date_debut.getMonth());
                 guest_data[6] = Integer.toString(date_debut.getYear());
-                
+
                 // Date which the shared will end
                 guest_data[7] = Integer.toString(date_fin.getDate());
                 guest_data[8] = Integer.toString(date_fin.getMonth());
                 guest_data[9] = Integer.toString(date_fin.getYear());
-                
+
                 // Create the class "GuestSharingData"
                 GuestSharingData guest = new GuestSharingData(guest_data);
                 System.out.println(guest);
-                
+
                 // Make the serialization
                 File file = new File("guest_sharing_information.ser");
                 // Make the serialization to save the owner information on a txt file
-                try
-                {
+                try {
                     try (FileOutputStream fileOut = new FileOutputStream(file); ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
                         out.writeObject(guest);
+                        close();
+                        ReceiverSummaryInformation receive_summary = new ReceiverSummaryInformation();
+                        receive_summary.setVisible(true);
                     }
-                   System.out.println("Serialized data is saved in owner_information.ser");
-                }catch(IOException i){}
-                
-                close();
-            }
-            else{
+                    System.out.println("Serialized data is saved in owner_information.ser");
+                } catch (IOException i) {
+                }
+            } else {
                 System.out.println("Incorrect");
             }
-        }
-        else{
+        } else {
             //CheckDataTyped();
             System.out.println("Verifier les données saisies");
         }
-        
+
     }//GEN-LAST:event_continuer_jbuttonActionPerformed
 
     /**
@@ -448,147 +445,145 @@ public class IdentifyTheReceiver extends javax.swing.JFrame implements java.io.S
      * Cette méthode permet de lire les informations saisies par l'utilisateur après 
      * avoir validé la requête. 
      */
-    private void readData(){
-        
+    private void readData() {
+
         s_pseudo = pseudo_jformattedtext.getText();
         s_raison = raison_partage.getText();
         s_relation = relation_choice.getSelectedItem();
-        
+
         // Récuperation des dates de début et de fin
         try {
-                date_debut = date_debut_partage.getDate(); 
-                date_fin   = date_fin_partage.getDate();
-                
-                date_debut.setYear(date_debut.getYear()+1900);
-                date_fin.setYear(date_fin.getYear()+1900);
-        }
-        catch (Exception e){
-                System.err.println("La date de naissance saisie est incorrecte");
+            date_debut = date_debut_partage.getDate();
+            date_fin = date_fin_partage.getDate();
+
+            date_debut.setYear(date_debut.getYear() + 1900);
+            date_fin.setYear(date_fin.getYear() + 1900);
+        } catch (Exception e) {
+            System.err.println("La date de naissance saisie est incorrecte");
         }
     }
-    
-    private boolean isChoosenDateCorrect (){
+
+    private boolean isChoosenDateCorrect() {
         boolean first_flag = (date_debut instanceof Date) && (date_fin instanceof Date);
         boolean second_flag = false;
-        
-        int day_start=0;
+
+        int day_start = 0;
         int month_start = 0;
-        int year_start=0;
-        
-        int day_end=0;
-        int month_end=0;
-        int year_end=0;
-        
-        try{
+        int year_start = 0;
+
+        int day_end = 0;
+        int month_end = 0;
+        int year_end = 0;
+
+        try {
             day_start = date_debut.getDay();
             month_start = date_debut.getMonth();
             year_start = date_debut.getYear();
-        }catch(Exception ex){
+        } catch (Exception ex) {
             System.out.println("La date de début saisie est incorrect");
-            day_start=0;
+            day_start = 0;
             month_start = 0;
-            year_start=0;
+            year_start = 0;
             date_debut = new Date();
             date_debut.setDate(day_start);
             date_debut.setMonth(month_start);
             date_debut.setYear(year_start);
         }
-        
-        try{
+
+        try {
             day_end = date_fin.getDay();
             month_end = date_fin.getMonth();
             year_end = date_fin.getYear();
-        }catch(Exception ex){
+        } catch (Exception ex) {
             System.out.println("La date de fin saisie est incorrect");
-            day_end=0;
-            month_end=0;
-            year_end=0;
+            day_end = 0;
+            month_end = 0;
+            year_end = 0;
             date_fin = new Date();
             date_fin.setDate(day_end);
             date_fin.setMonth(month_end);
             date_fin.setYear(year_end);
         }
-        
+
         //System.out.println("Comparaison date de début et date du jour : " + date_debut.equals(date_du_jour));
-        if (date_fin.after(date_debut))
+        if (date_fin.after(date_debut)) {
             second_flag = true;
-            
+        }
+
         System.out.println("Flag checkDateChoosen() first flag = " + first_flag);
         System.out.println("Flag checkDateChoosen() second flag = " + second_flag);
-        
+
         return first_flag && second_flag;
     }
+
     /*
      * Cette méthode permet de vérifier si les données saisies sont correctes ou pas.
      */
-    private boolean isDataTypedValide (){
-        boolean first_flag = (s_pseudo   != null && !s_pseudo.isEmpty()) && 
-                             (s_raison   != null && !s_raison.isEmpty()) && 
-                             (s_relation != null && !s_relation.isEmpty() && !s_relation.equals("..."));
-        
+    private boolean isDataTypedValide() {
+        boolean first_flag = (s_pseudo != null && !s_pseudo.isEmpty())
+                && (s_raison != null && !s_raison.isEmpty())
+                && (s_relation != null && !s_relation.isEmpty() && !s_relation.equals("..."));
+
         boolean second_flag = isChoosenDateCorrect();
-        
+
         System.out.println("Flag isDataTypedValide() first flag = " + first_flag);
         System.out.println("Flag isDataTypedValide() second flag = " + second_flag);
-        
+
         return first_flag && second_flag;
     }
-    
+
     /*
      * Cette méthode permet de verifier les données saisies
      * incorrectes et notifie l'utilisateur le champ à vérifier.
      */
-    private boolean isTypedDataCorrect (){
+    private boolean isTypedDataCorrect() {
         boolean first_flag = false;
         boolean second_flag = false;
         int test_count = 0;
 
         String notification = "";
 
-        if (s_pseudo == null || s_pseudo.isEmpty()){
+        if (s_pseudo == null || s_pseudo.isEmpty()) {
             notification += " - Pseudo\n";
-        }
-        else{
+        } else {
             test_count += 1;
         }
 
-        if (s_raison == null || s_raison.isEmpty()){
+        if (s_raison == null || s_raison.isEmpty()) {
             notification += " - La raison du partage\n";
-        }
-        else{
+        } else {
             test_count += 1;
         }
 
-        if (s_relation == null || s_relation.equals("...")){
+        if (s_relation == null || s_relation.equals("...")) {
             notification += " - La relation avec le destinataire\n";
-        }
-        else{
+        } else {
             test_count += 1;
         }
         System.out.println("Notif = " + notification);
         second_flag = isChoosenDateCorrect();
-        
+
         System.out.println("test_count = " + test_count);
-        first_flag = test_count==3;
-            
+        first_flag = test_count == 3;
+
         System.out.println("Flag isTypedDataCorrect() first flag = " + first_flag);
         System.out.println("Flag isTypedDataCorrect() second flag = " + second_flag);
-        
+
         return first_flag && second_flag;
     }
-    
-    private void close(){
+
+    private void close() {
         WindowEvent winClosing = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
         Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosing);
     }
-    
+
     /**
-     * Methode listerRelation : Liste les types de relation défini. 
-     * cette liste est à remettre à jour plus tard. 
-     * 
+     * Methode listerRelation : Liste les types de relation défini. cette liste
+     * est à remettre à jour plus tard.
+     *
      */
-    private void listerRelation (){
-      
+    private void listerRelation() {
+
         relation_choice.add("...");
         relation_choice.add("Epoux");
         relation_choice.add("Enfant");
@@ -601,9 +596,9 @@ public class IdentifyTheReceiver extends javax.swing.JFrame implements java.io.S
         relation_choice.add("Livreur");
         relation_choice.add("Autre");
     }
-    
-    public void setGuestId(String guest_id){
-         id_sesame_guest = guest_id;
+
+    public void setGuestId(String guest_id) {
+        id_sesame_guest = guest_id;
     }
-    private static final long serialVersionUID = 42L; 
+    private static final long serialVersionUID = 42L;
 }

@@ -240,7 +240,8 @@ public class ManageAcces extends JFrame implements ListSelectionListener {
         // Make the deserialization of the table file which is the database of the device
         IdentifiantAndKeyTable table_id_key = null;
         boolean flag_extraction =  false;
-        File file = new File("identifiant_and_key_table.ser");
+        //File file = new File("identifiant_and_key_table.ser");
+        File file = new File("/home/pi/Desktop/identifiant_and_key_table.ser");
         try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
             table_id_key = (IdentifiantAndKeyTable) in.readObject();
 
