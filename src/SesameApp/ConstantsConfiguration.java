@@ -99,8 +99,8 @@ public interface ConstantsConfiguration {
     final String INFORMATION_ACCREDITE_ENREGISTRE_CORRECTEMENT = "IAEC_03";
     final String INFORMATION_ACCREDITE_DONNEES_ERONNEES        = "IADE_03";
     
-    final String DEMANDE_INFORMATION_SESAME_DOORS      = "DESD_03";
-    
+    final String DEMANDE_INFORMATION_SESAME_DOORS      = "DISD_03";
+
     final String DEBUT_ENVOIE_INFORMATION_SESAME_DOORS = "DEISD_03";
     final String FIN_ENVOIE_INFORMATION_SESAME_DOORS   = "FEISD_03";
     

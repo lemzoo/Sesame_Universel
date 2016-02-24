@@ -134,7 +134,7 @@
         <Property name="text" type="java.lang.String" value="Plus d&apos;info sur l&apos;utilisateur"/>
       </Properties>
       <Events>
-        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="info_jbuttonMouseReleased"/>
+        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="obtenirInfoBtnMouseReleased"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="nouveau_partage_jbutton">
@@ -148,7 +148,7 @@
         <Property name="text" type="java.lang.String" value="Nouveau partage"/>
       </Properties>
       <Events>
-        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="nouveau_partage_jbuttonMouseReleased"/>
+        <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="effectuerPartageBtnMouseReleased"/>
       </Events>
     </Component>
     <Component class="java.awt.List" name="liste_accreditee">
@@ -158,7 +158,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="liste_accrediteeMouseClicked,listeAccrediteeMouseClickedEvent"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="listeAccrediteeMouseClicked"/>
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="//liste_peripherique.addListSelectionListener(this);"/>

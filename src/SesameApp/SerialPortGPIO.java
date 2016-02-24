@@ -13,15 +13,8 @@ import SharingGUI.*;
  * and open the template in the editor.
  */
 
-import com.pi4j.io.serial.Serial;
-import com.pi4j.io.serial.SerialFactory;
-import com.pi4j.io.serial.SerialPortException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import com.pi4j.io.serial.*;
+import java.io.*;
 
 /**
  * This example code demonstrates how to perform serial communications using the Raspberry Pi.
@@ -35,7 +28,7 @@ public class SerialPortGPIO implements ConstantsConfiguration{
     private int baudrate = 0;
     private Serial serial;
     UARTListener uart_listener = null;
-    private String buffer;
+    private StringBuffer buffer;
     private String identifiant = "";
     private String key = "";
 
@@ -68,7 +61,9 @@ public class SerialPortGPIO implements ConstantsConfiguration{
 
         // create and register the serial data listener
         uart_listener = new UARTListener(this);
-        serial.addListener(uart_listener);        
+        serial.addListener(uart_listener);  
+        
+        buffer = new StringBuffer("");
     }
 
     /**
@@ -92,7 +87,18 @@ public class SerialPortGPIO implements ConstantsConfiguration{
      * @param data
      */
     public void setBufferReception (String data){
-        this.buffer = data;
+        int len = buffer.length();
+        buffer.insert(len, data);
+        
+        //this.buffer = data;
+    }
+    
+    /**
+     * Methode : resetBufferReception(String data)
+     */
+    public void resetBufferReception (){
+        int len = buffer.length();
+        buffer.delete(0, len);        
     }
     
     /**
@@ -100,7 +106,8 @@ public class SerialPortGPIO implements ConstantsConfiguration{
      * @return buffer 
      */
     public String getBufferReception (){
-        return buffer;
+        //return buffer;
+        return buffer.toString();
     }
 
     /**
@@ -128,26 +135,14 @@ public class SerialPortGPIO implements ConstantsConfiguration{
     }
     
     /**
-     * Methode setReceivedData() allows you to write the received data in the buffer which you want
-     * @param pos : is the position which data will be written
-     * @param buffer : is the array string which received data will be written
-     * @param data_received : is the data which received by the serial port
-     */
-
-    public void setReceivedData(int pos, String [] buffer, String data_received){
-        buffer[pos] = data_received;
-        System.out.println("Data saved : " + data_received + " pos = " + pos);
-    }
-    
-    /**
      * Methode setBufferData() allows you to write the received data in the buffer which you want
      * @param data_received : is the data which received by the serial port
      */
 
     public void setBufferData(String data_received){
-        buffer = buffer + data_received;
-        buffer = buffer.replace("\n", "").replace("\r", "");
+        buffer.append(data_received);
     }
+    
     
     /**
      * Methode sendData allow you to send data via the uart
@@ -306,30 +301,52 @@ public class SerialPortGPIO implements ConstantsConfiguration{
     public static String [] extractBufferData(String string_buffer){
         System.out.println("<--- BEGIN OF THE extractBufferData() methode --->");
         
+        String str_arg_clean = string_buffer.replace("\n", "").replace("\r", "");
+        
+        StringBuffer str_arg = new StringBuffer(str_arg_clean);
+        
         String [] data_in = new String[100];
         String [] data_out;
         
-        System.out.println("Buffer = " + string_buffer);
+        System.out.println("Buffer = " + str_arg);
+        
+        boolean flag_buffer_content = str_arg.length() > 0;
         
         //Check the data saved in the buffer
-        int buffer_size = string_buffer.length();       
+        int buffer_size = 0;       
         
         // Put the buffer contents in the char Array
-        char[] charArray = string_buffer.toCharArray();
-        String temp="";
+        char[] charArray = null;
+        StringBuffer temp = new StringBuffer("");
+        int len_temp = 0;
+        String str_default = null;
+        
+        if (flag_buffer_content){
+            buffer_size = str_arg.length(); 
+            str_default = str_arg.toString();
+            charArray = str_default.toCharArray();
+        }
+        else{
+            System.out.println("Le buffer est vide");
+            str_default = "02AB02CD06EFGHIJ";
+            buffer_size = str_default.length();
+            charArray = str_default.toCharArray();
+        }
         
         // Extract the first data which contains 7 charactere
         int count = 0;
         int size = 0;
 
         // Extract the first size of the first frame
-        temp = String.valueOf(charArray[count]) + String.valueOf(charArray[count+1]);
+        temp.insert(0, String.valueOf(charArray[count]));
+        len_temp = temp.length();
+        temp.insert(len_temp, String.valueOf(charArray[count+1])); //temp = String.valueOf(charArray[count]) + String.valueOf(charArray[count+1]);
         count = count + 2;
-        System.out.println("Premier Temp = " + temp);
+        
         int size_charactere = 0;
+        
         try{
-            size_charactere = Integer.parseInt(temp);
-            //System.out.println("Cast du premier caractere = " + size_charactere);
+            size_charactere = Integer.parseInt(temp.toString());
         }catch(NumberFormatException ex){
             size_charactere = 0;
             System.out.println("Error while trying to convert String to Integer. The data is : " + temp);
@@ -337,14 +354,17 @@ public class SerialPortGPIO implements ConstantsConfiguration{
         
         boolean flag_extraction = true;
         while ((count <= buffer_size-1) && flag_extraction){
-            temp = "";
+            len_temp = temp.length();
+            temp.delete(0, len_temp);
+            //temp = "";
+            
             for (int j=count; j<(count + size_charactere); j++){
                 char char_ = charArray[j];
-                temp = temp + String.valueOf(char_);
-                //System.out.println("Temp = " + temp);
+                len_temp = temp.length();
+                temp.insert(len_temp, String.valueOf(char_));
+                //temp = temp + String.valueOf(char_);
             }
-            data_in[size] = temp;
-            //System.out.println("Data extracted["+size+"] = " + data_in[size]);
+            data_in[size] = temp.toString();
             size ++;
             
             // Check if you have got the end of the buffer to stop extracting
@@ -352,12 +372,17 @@ public class SerialPortGPIO implements ConstantsConfiguration{
                 flag_extraction = false;
             }
             else{
-                temp = String.valueOf(charArray[count + size_charactere]) + String.valueOf(charArray[count + size_charactere+1]);                
+                len_temp = temp.length();
+                temp.delete(0, len_temp);
                 
-                //System.out.println("Size futur data = " + temp);
+                temp.insert(0, String.valueOf(charArray[count + size_charactere]));
+                len_temp = temp.length();
+                temp.insert(len_temp, String.valueOf(charArray[count + size_charactere+1]));
+                //temp = String.valueOf(charArray[count + size_charactere]) + String.valueOf(charArray[count + size_charactere+1]);                
+                
                 count = count + size_charactere + 2;
                 try{
-                    size_charactere = Integer.parseInt(temp);
+                    size_charactere = Integer.parseInt(temp.toString());
                 }catch(NumberFormatException ex){
                     size_charactere = 0;
                     System.out.println("Error while trying to convert String to Integer " + ex.getMessage());
@@ -371,16 +396,15 @@ public class SerialPortGPIO implements ConstantsConfiguration{
             count_data ++;
         }
         data_out = new String[count_data];
-        for(int i=0;i<count_data;i++){
-            data_out[i] = data_in[i];
-            //System.out.println("Data extraction methode["+i+"] = " + data_out[i]);
-        }
+        System.arraycopy(data_in, 0, data_out, 0, count_data);
+        
         System.out.println("<--- END OF THE extractBufferData() methode --->");
+        
         return data_out; 
     }
+    
     /**
-     * Methode : openUartPort() allow you to open the uart port if this one is closed
-     * @return status of the port 
+     * Methode : openUartPort() allow you to open the uart port if this one is closed 
      */
     public void openUartPort (){
         if (this.serial.isOpen()){
@@ -438,11 +462,12 @@ public class SerialPortGPIO implements ConstantsConfiguration{
     
     /**
      * Methode : analyzeDataReceived => Traitement des données recu
+     * @param received_data
      * @throws java.lang.InterruptedException
      */
-    public void analyzeDataReceived() throws InterruptedException{
-
-        switch (reception_buffer) {
+    public void analyzeDataReceived(String received_data) throws InterruptedException{
+        reception_buffer = received_data;
+        switch (received_data) {
             case BONJOUR:
             Thread.sleep(50);
                 System.out.println("|BONJOUR| repondu de la part du SESAME DOORS");
@@ -452,7 +477,7 @@ public class SerialPortGPIO implements ConstantsConfiguration{
                 Thread.sleep(50);
                 System.out.println("Reception de BEGIN");
                 // reset the buffer
-                buffer = "";
+                resetBufferReception();
                 flag_saving = true;
                 break;
                 
@@ -598,11 +623,11 @@ public class SerialPortGPIO implements ConstantsConfiguration{
         System.out.println("<--- BEGIN OF CALLING checkBufferData() methode --->");
         
         // Get the data saved in the buffer
-        String [] data_in = SerialPortGPIO.extractBufferData(buffer);
+        String [] data_in = SerialPortGPIO.extractBufferData(buffer.toString());
         
         // reset the buffer
-        buffer = "";
-        
+        resetBufferReception();
+                
         // Extract the first and last data to check the kind of request
         String first_data = data_in[0];
         String last_data  = data_in[data_in.length - 1];

@@ -9,7 +9,6 @@ import LinkingGUI.*;
 import SharingGUI.*;
 
 import java.util.Date;
-import javax.swing.JPasswordField;
 
 /**
  *
@@ -27,98 +26,81 @@ public class UserIdentification implements java.io.Serializable {
     private String ville;
     private String pays;
     
-    public UserIdentification (){
-        nom = "BA";
-        prenom = "Lamine";
-        date_naissance = new Date(2015, 8, 9);
-        numero_mobile = "06 51 58 75 08";
-        adresse_mail = "lamine.ba@everygates.com";
-        numero_voie = 21;
-        nom_voie = "Rue Robert Degert";
-        code_postale = 94400;
-        ville = "Vitry sur Seine";
-        pays = "France";
+    
+    /**
+     * Constructor "UserIdentification" without argument is only used for the deserialization
+     * All the attribut of the constructor is on default value. 
+     */
+    public UserIdentification(){
+        nom = "";
+        prenom = "";
+        date_naissance = new Date(1988, 11, 28);
+        numero_mobile = "";
+        adresse_mail = "";
+        numero_voie = 0;
+        nom_voie = "";
+        code_postale = 0;
+        ville = "";
+        pays = "";
+        System.out.println("UserIdentification is created with default value");
     }
     
+    
+    /**
+     * Constructor "UserIdentification" is the default constructor with the parameter
+     * @param data contains all the data which allow you to identify the user. 
+     */
     public UserIdentification(String [] data){
         if (data != null && data.length>=12){
-            String lv_nom;
-            String lv_prenom;
-            Date   lv_date_naissance;
-            String lv_numero_mobile;
-            String lv_adresse_mail;
-            int    lv_numero_voie;
-            String lv_nom_voie;
-            int    lv_code_postale = 0;
-            String lv_ville;
-            String lv_pays;
-
+            int    street_number;
+            int    zip_code = 0;
             int day   = 0;
             int month = 0;
             int year  = 0;
-            
-            // Assignement 
-            lv_nom = data[0];
-            lv_prenom = data[1];
             
             // Convert Data to the correct format
             try{
                 day   = Integer.parseInt(data[2]);
                 month = Integer.parseInt(data[3]);
                 year  = Integer.parseInt(data[4]);
-                lv_numero_voie  = Integer.parseInt(data[7]);
-                code_postale   = Integer.parseInt(data[9]);
+                street_number  = Integer.parseInt(data[7]);
+                zip_code   = Integer.parseInt(data[9]);
                 System.out.println("Conversion done succesffully");
-           }
+            }
             catch(NumberFormatException ex){
                 System.out.println("Error de conversion de String to int " + ex.getMessage());
                 day = 0;
                 month = 0;
                 year = 0;
-                lv_numero_voie = 0;
-                code_postale = 0;
+                street_number = 0;
+                zip_code = 0;
             }
-            lv_date_naissance = new Date(year, month, day);
             
-            lv_numero_mobile = data[5];
-            lv_adresse_mail = data[6];
-            lv_nom_voie = data[8];
-            lv_ville = data[10];
-            lv_pays = data[11];
+            // Assignement 
+            nom = data[0];
+            prenom = data[1];
+            date_naissance = new Date(year, month, day);
+            numero_mobile = data[5];
+            adresse_mail = data[6];
+            numero_voie = street_number;
+            nom_voie = data[8];
+            code_postale = zip_code;
+            ville = data[10];
+            pays = data[11];
 
-            // Assign the real attribut
-            nom = lv_nom;
-            prenom = lv_prenom;
-            date_naissance = lv_date_naissance;
-            numero_mobile = lv_numero_mobile;
-            adresse_mail = lv_adresse_mail;
-            numero_voie = lv_numero_voie;
-            nom_voie = lv_nom_voie;
-            code_postale = lv_code_postale;
-            ville = lv_ville;
-            pays = lv_pays;
             System.out.println("Object UserIdentification is created with correct information");
         }
         else{
-            nom = "";
-            prenom = "";
-            date_naissance = new Date(1900, 0, 1);
-            numero_mobile = "";
-            adresse_mail = "";
-            numero_voie = 0;
-            nom_voie = "";
-            code_postale = 0;
-            ville = "";
-            pays = "";
-            System.out.println("UserIdentification is created with default value");
+            new UserIdentification();
         }
     }
     
+
     @Override
     public String toString(){
         String chaine = "... Nom : " + nom + " ...\n" + 
-                        "... Prenom : " + prenom + " ...\n" +
-                        "... Date de naissance : " + date_naissance.getDay() + "-" + date_naissance.getMonth() + "-" + date_naissance.getYear() + "...\n" + 
+                        "... Prenom : " + prenom + " ...\n" + 
+                        "... Date de naissance : " + date_naissance.getDate()+ "-" + date_naissance.getMonth() + "-" + date_naissance.getYear() + "...\n" + 
                         "... Numero de telephone : " + numero_mobile + " ...\n" +
                         "... Adresse : " + numero_voie + ", " + nom_voie + " ...\n" +
                         "...           " + ville + ", " + pays + " ...\n"; 

@@ -9,39 +9,41 @@ import LinkingGUI.*;
 import SharingGUI.*;
 
 import java.util.Date;
-import javax.swing.JPasswordField;
 
 /**
- *
+ * Classe OwnerInformation create an object which contains all data about the owner of the Sesame and 
+ * the object create a identity. 
  * @author LamineBA
  */
 public class OwnerInformation extends UserIdentification implements java.io.Serializable {
 
     private String user_id;
-    private JPasswordField password;
+    private String password;
     
-    public OwnerInformation (){
-        super();
-        password = new JPasswordField(null,"a",0);
-        user_id = String.valueOf(super.getUserFirstName().charAt(0)) + String.valueOf(super.getUserLastName().charAt(0)) +
-                  String.valueOf(super.getUserBirthdayDate().getDate())+ String.valueOf(super.getUserBirthdayDate().getMonth()) + String.valueOf(super.getUserBirthdayDate().getYear()).charAt(3)+
-                  String.valueOf(super.getUserPhoneNumber().charAt(7)) + String.valueOf(super.getUserPhoneNumber().charAt(9));
-    }
-    
+    /**
+     * Constructor "OwnerInformation" 
+     * @param data contains all data about the owner except the identity and password of the owner
+     */
     public OwnerInformation (String [] data){
         super(data);
-        password = new JPasswordField(null,"a",0);
+        password = "a";
         user_id = String.valueOf(super.getUserFirstName().charAt(0)) + String.valueOf(super.getUserLastName().charAt(0)) +
                   String.valueOf(super.getUserBirthdayDate().getDate())+ String.valueOf(super.getUserBirthdayDate().getMonth()) + String.valueOf(super.getUserBirthdayDate().getYear()).charAt(3)+
                   String.valueOf(super.getUserPhoneNumber().charAt(7)) + String.valueOf(super.getUserPhoneNumber().charAt(9));
     }
     
+    /**
+     * Constructor "OwnerInformation" without aragument is used only for the deserialization
+     */
+    public OwnerInformation(){
+        super();
+    }
     @Override
     public String toString(){
         String chaine = super.toString();
         chaine +=   "..... Information complémentaire ......" + "\n" + 
                     "..... Identifiant de l'utilisateur  : " + user_id + " ....." + "\n" + 
-                    "..... Mot de passe de l'utilisateur : " + password.getText() + " ....." + "\n"+
+                    "..... Mot de passe de l'utilisateur : " + password + " ....." + "\n"+
                     "...................................................";
         return chaine;
     }
@@ -247,20 +249,20 @@ public class OwnerInformation extends UserIdentification implements java.io.Seri
      * Methode getOwnerPassword()
      * This methode returns the password typed by the user who is the 
      * owner of the SESAME. 
-     * Returned type : JPasswordField
+     * Returned type : String
      * @return password
      */
-    public JPasswordField getOwnerPassword(){
+    public String getOwnerPassword(){
         return this.password;
     }
     /**
      * Methode setOwnerPassword(pass)
      * This methode sets the new password of the user who is the 
      * owner of the SESAME.
-     * @arg type : JPasswordField
+     * @arg type : String
      * @param pass
      */
-    public void setOwnerPassword(JPasswordField pass){
+    public void setOwnerPassword(String pass){
         this.password = pass;
     }
     
@@ -275,7 +277,7 @@ public class OwnerInformation extends UserIdentification implements java.io.Seri
         String [] data_out = new String[size_data + 2];
         System.arraycopy(data_temp, 0, data_out, 0, size_data);
         data_out[size_data] = user_id;
-        data_out[size_data+1] = password.getText();
+        data_out[size_data+1] = password;
         // End of the arrange data
         
         return data_out;
@@ -290,15 +292,35 @@ public class OwnerInformation extends UserIdentification implements java.io.Seri
         return super.getUserInformation();
     }
     
-    
-    
     private static final long serialVersionUID = 42L; 
     
     public static void main (String [] args){
-        UserIdentification user = new UserIdentification();
-        System.out.println(user);
-        System.out.println("<---------------------------------------->");
-        OwnerInformation owner = new OwnerInformation();
+        String data_owner [] = new String[12]; 
+        data_owner[0]  = "BA";
+        data_owner[1]  = "Lamine";
+        data_owner[2]  = "10";
+        data_owner[3]  = "10";
+        data_owner[4]  = "1990";
+        data_owner[5]  = "06 51 58 75 08";
+        data_owner[6]  = "lamine.ba@everygates.com";
+        data_owner[7]  = "13";
+        data_owner[8]  = "Avenue Maximilien Robespierre";
+        data_owner[9]  = "94400";
+        data_owner[10] = "Vitry sur Seine";
+        data_owner[11] = "France";
+        OwnerInformation owner = new OwnerInformation(data_owner);
         System.out.println(owner);
+        
+        StringBuffer buffer = new StringBuffer();
+        String str_1 = "ABCDEFG" ;
+        
+        buffer.append(str_1);
+        //System.arraycopy(str_1, 0, buffer, buffer.length(), str_1.length());
+        System.out.println("buffer before = " + buffer.toString());
+        
+        str_1 = "HIJ" ;
+        buffer.append(str_1);
+        //System.arraycopy(str_1, 0, buffer, buffer.length(), str_1.length());
+        System.out.println("buffer after = " + buffer.toString());
     }
 }

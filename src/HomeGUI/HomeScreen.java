@@ -199,6 +199,11 @@ public class HomeScreen extends javax.swing.JFrame {
         fonctions_jMenu.add(supprimer_jMenuItem);
 
         rattacher_jMenuItem.setText("Rattacher un Periphérique");
+        rattacher_jMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                rattacherMouseReleased(evt);
+            }
+        });
         fonctions_jMenu.add(rattacher_jMenuItem);
 
         jMenuBar.add(fonctions_jMenu);
@@ -285,39 +290,6 @@ public class HomeScreen extends javax.swing.JFrame {
     private void arreterMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_arreter_jMenuItemMouseReleased
         close();
     }//GEN-LAST:event_arreter_jMenuItemMouseReleased
-
-    /**
-     * Methode accederMouseReleased 
-     * this methode allows you to acces to your gate by the Sesame
-     * @param evt 
-     */
-    private void accederMouseReleased(java.awt.event.MouseEvent evt) {   
-        // Acceder     
-        ManageAcces manage_acces = new ManageAcces ();
-        manage_acces.setVisible(true);
-    } 
-
-    /**
-     * Methode rattacher_jMenuItemMouseReleased 
-     * this methode allows you to delete all the acces wich are shared with others Sesame user
-     * @param evt 
-     */
-    private void supprimerMouseReleased(java.awt.event.MouseEvent evt) {   
-        // Supprimer les droits d'accès
-    } 
-    /**
-     * Methode rattacher_jMenuItemMouseReleased 
-     * this methode allows you to synchronize the Sesame with the device wich manages
-     * the gate of the owner of the Sesame
-     * @param evt 
-     */
-    private void rattacherMouseReleased(java.awt.event.MouseEvent evt) { 
-        // Rattacher un periphérique  
-        Peripherique periph = new Peripherique ();
-        periph.setVisible(true);
-        
-    } 
-
     
     /**
      * Methode afficherInfoAdministrateurMouseReleased 
@@ -341,6 +313,31 @@ public class HomeScreen extends javax.swing.JFrame {
         ManageSharedDevice share = new ManageSharedDevice();
         share.setVisible(true);
     }//GEN-LAST:event_partagerMouseReleased
+
+    /**
+     * Methode rattacher_jMenuItemMouseReleased 
+     * this methode allows you to synchronize the Sesame with the device wich manages
+     * the gate of the owner of the Sesame
+     * @param evt 
+     */
+    private void rattacherMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rattacherMouseReleased
+        // TODO add your handling code here:
+        // Rattacher un periphérique  
+        Peripherique periph = new Peripherique ();
+        periph.setVisible(true);
+    }//GEN-LAST:event_rattacherMouseReleased
+
+    /**
+     * Methode accederMouseReleased 
+     * this methode allows you to acces to your gate by the Sesame
+     * @param evt 
+     */
+    private void accederMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accederMouseReleased
+        // TODO add your handling code here:
+        // Acceder     
+        ManageAcces manage_acces = new ManageAcces ();
+        manage_acces.setVisible(true);
+    }//GEN-LAST:event_accederMouseReleased
    
     /**
      * @param args the command line arguments

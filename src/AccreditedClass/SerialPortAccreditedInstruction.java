@@ -57,12 +57,13 @@ public class SerialPortAccreditedInstruction extends SerialPortGPIO{
     
     /**
      * Methode : analyzeDataReceived => Traitement des données recu
+     * @param received_data
      * @throws java.lang.InterruptedException
      */
     @Override
-    public void analyzeDataReceived() throws InterruptedException{
+    public void analyzeDataReceived(String received_data) throws InterruptedException{
 
-        switch (super.getLastReceivedData()) {
+        switch (received_data) {
             case BONJOUR:
                 System.out.println("|BONJOUR| recu dans la classe herité");
                 Thread.sleep(100);

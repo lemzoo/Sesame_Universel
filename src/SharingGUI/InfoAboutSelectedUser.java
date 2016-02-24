@@ -33,7 +33,7 @@ public class InfoAboutSelectedUser extends javax.swing.JFrame {
          * to add the indentifier number and password 
          */          
         OwnerInformation user = null;
-        File file = new File("owner_information.ser");
+        File file = new File("/home/pi/Desktop/sharing/owner_information.ser");
         try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
             user = (OwnerInformation) in.readObject();
             

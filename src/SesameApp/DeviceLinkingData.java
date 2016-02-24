@@ -19,7 +19,7 @@ public class DeviceLinkingData implements java.io.Serializable{
     private String type_appartenance; 
     private String emplacement; 
     private String type_porte; 
-    private String commentaire_porte; 
+    private String commentaire; 
     private int numero_voie;
     private String nom_voie;
     private int code_postale;
@@ -32,7 +32,7 @@ public class DeviceLinkingData implements java.io.Serializable{
         type_appartenance = ""; 
         emplacement = ""; 
         type_porte = ""; 
-        commentaire_porte = ""; 
+        commentaire = ""; 
         numero_voie = 0;
         nom_voie = "";
         code_postale = 0;
@@ -42,17 +42,20 @@ public class DeviceLinkingData implements java.io.Serializable{
     }
     
     public DeviceLinkingData(String [] data){
-        if (data != null && data.length >= 11){
+        if (data != null && data.length >= 10){
             
             type_de_bien = data[0]; 
             type_appartenance = data[1]; 
             emplacement = data[2]; 
             type_porte = data[3]; 
-            commentaire_porte = data[4];       
+            commentaire = data[4];       
             nom_voie = data[6];
             ville = data[8];
             pays = data[9];  
-            device_identifiant = data[10];
+            if (data.length >= 11)
+                device_identifiant = data[10];
+            else
+                device_identifiant = "";
             
             try{
                 numero_voie = Integer.parseInt(data[5]);
@@ -73,7 +76,7 @@ public class DeviceLinkingData implements java.io.Serializable{
                         + "... TYPE D'APPARTENANCE : " + type_appartenance + " ..." + "\n"
                         + "... EMPLACEMENT : " + emplacement + " ..." + "\n"
                         + "... TYPE DE PORTE : " + type_porte + " ..." + "\n"
-                        + "... COMMENTAIRE : " + commentaire_porte + " ..." + "\n"
+                        + "... COMMENTAIRE : " + commentaire + " ..." + "\n"
                         + "... ADRESSE : " + numero_voie + " " + nom_voie + "..." + "\n"
                         + ".............. " + code_postale + " " + ville + " ..." + "\n" 
                         + ".............. " + pays + " ..." + "\n"
@@ -155,7 +158,7 @@ public class DeviceLinkingData implements java.io.Serializable{
      * @return type_porte
      */
     public String getCommentaire(){
-        return commentaire_porte;
+        return commentaire;
     }
     
     /**
@@ -199,25 +202,40 @@ public class DeviceLinkingData implements java.io.Serializable{
     }
     
     /**
-     * Methode getDeviceLinkingData() allow you to get arranged data which is ready for sending
+     * Methode getDeviceLinkingData() allow you to get arranged data except the id of the device. 
+     * These data is ready to send to the Sesame or device
      * @return [] String containing all attribut of the class
      */
-    public String [] getDeviceLinkingData(){
-        String [] data = new String[11];
+    public String [] getDeviceDataWithoutId(){
+        String [] data = new String[10];
         
         data[0] = type_de_bien;
         data[1] = type_appartenance;
         data[2] = emplacement;
         data[3] = type_porte;
-        data[4] = commentaire_porte;
+        data[4] = commentaire;
         data[5] = Integer.toString(numero_voie);
         data[6] = nom_voie;
         data[7] = Integer.toString(code_postale);
         data[8] = ville;
         data[9] = pays;
-        data[10] = device_identifiant;
+        //data[10] = device_identifiant;
         
         return data;
+    }
+    
+    /**
+     * Methode getDeviceDataWithId() allow you to get arranged data which is ready for reading
+     * @return [] String containing all attribut of the class
+     */
+    public String [] getDeviceDataWithId(){
+        String [] data_temp = this.getDeviceDataWithoutId();
+        int size_data = data_temp.length;
+        String [] data_out = new String[size_data + 1];
+        System.arraycopy(data_temp, 0, data_out, 0, size_data);
+        data_out[size_data] = device_identifiant;
+        
+        return data_out;
     }
     
     /**
@@ -229,7 +247,7 @@ public class DeviceLinkingData implements java.io.Serializable{
                             !type_appartenance.isEmpty() &&
                             !emplacement.isEmpty() &&
                             !type_porte.isEmpty() &&
-                            !commentaire_porte.isEmpty() &&
+                            !commentaire.isEmpty() &&
                             (numero_voie > 0) &&
                             !nom_voie.isEmpty() &&
                             (code_postale > 0) &&

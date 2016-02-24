@@ -744,22 +744,24 @@ public class PeripheriqueSummaryInformation extends javax.swing.JFrame implement
      * @return data[] which type is String
      */ 
     private String [] arrangeLinkingData (){
-        String [] linking_data = device.getDeviceLinkingData();
-        String [] data = new String[13];
+        String [] linking_data = device.getDeviceDataWithoutId();
+        int formule = 0;
+        int checksum = 0;
+        int number_element = linking_data.length;
+        String [] data = new String[number_element + 3];
         
         // Send the first frame to inform the device that the Sesame is ready the send all the data about the linking
         data[0] = DEBUT_ENVOI_INFORMATION_RATTACHEMENT;
         
         System.out.println("the buffer of the linking data is Filled out correctly");
-        System.arraycopy(linking_data, 0, data, 1, linking_data.length);
+        System.arraycopy(linking_data, 0, data, 1, number_element);
 
         // Create the checksum
-        int formule = 0; 
-        int number_element = linking_data.length;
         for (int j=0; j<number_element; j++){
             formule = formule + (number_element-j)*linking_data[j].length();
         }
-        int checksum = formule - number_element*128;
+        
+        checksum = formule - number_element*128;
         data[number_element + 1] = Integer.toString(checksum);
 
         // Put the last frame to inform the device that is the last data about the linking

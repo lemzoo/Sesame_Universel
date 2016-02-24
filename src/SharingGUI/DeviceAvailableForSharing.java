@@ -52,10 +52,11 @@ public class DeviceAvailableForSharing extends JFrame implements ListSelectionLi
         jpanel_titre = new javax.swing.JPanel();
         titre_fenetre = new javax.swing.JLabel();
         separator_jpanel = new javax.swing.JPanel();
-        annuler_jbutton = new javax.swing.JButton();
-        choisir_jbutton = new javax.swing.JButton();
         liste_peripherique = new java.awt.List();
         separator_jpanel1 = new javax.swing.JPanel();
+        jpanel_titre1 = new javax.swing.JPanel();
+        annuler_jbutton = new javax.swing.JButton();
+        choisir_jbutton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Péripheriques administrateurs");
@@ -70,7 +71,7 @@ public class DeviceAvailableForSharing extends JFrame implements ListSelectionLi
             .addGroup(jpanel_titreLayout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(titre_fenetre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(42, 42, 42))
+                .addGap(38, 38, 38))
         );
         jpanel_titreLayout.setVerticalGroup(
             jpanel_titreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -93,32 +94,10 @@ public class DeviceAvailableForSharing extends JFrame implements ListSelectionLi
             .addGap(0, 10, Short.MAX_VALUE)
         );
 
-        annuler_jbutton.setBackground(new java.awt.Color(255, 153, 153));
-        annuler_jbutton.setText("Annuler");
-        annuler_jbutton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                annuler_jbuttonMouseReleased(evt);
-            }
-        });
-
-        choisir_jbutton.setBackground(new java.awt.Color(153, 255, 51));
-        choisir_jbutton.setText("Choisir");
-        choisir_jbutton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                choisir_jbuttonMouseReleased(evt);
-            }
-        });
-        choisir_jbutton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                choisir_jbuttonActionPerformed(evt);
-            }
-        });
-
         liste_peripherique.setBackground(new java.awt.Color(153, 153, 255));
         liste_peripherique.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                liste_peripheriqueMouseClicked(evt);
-                listeAccrediteeMouseClickedEvent(evt);
+                listePeripheriqueMouseClicked(evt);
             }
         });
 
@@ -135,29 +114,53 @@ public class DeviceAvailableForSharing extends JFrame implements ListSelectionLi
             .addGap(0, 10, Short.MAX_VALUE)
         );
 
+        annuler_jbutton.setBackground(new java.awt.Color(255, 153, 153));
+        annuler_jbutton.setText("Annuler");
+        annuler_jbutton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                annulerBtnMouseReleased(evt);
+            }
+        });
+
+        choisir_jbutton.setBackground(new java.awt.Color(153, 255, 51));
+        choisir_jbutton.setText("Choisir");
+        choisir_jbutton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                choisirBtnMouseReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jpanel_titre1Layout = new javax.swing.GroupLayout(jpanel_titre1);
+        jpanel_titre1.setLayout(jpanel_titre1Layout);
+        jpanel_titre1Layout.setHorizontalGroup(
+            jpanel_titre1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpanel_titre1Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(annuler_jbutton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(choisir_jbutton)
+                .addContainerGap())
+        );
+        jpanel_titre1Layout.setVerticalGroup(
+            jpanel_titre1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpanel_titre1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(annuler_jbutton)
+                .addComponent(choisir_jbutton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jpanel_titre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(separator_jpanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(separator_jpanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(liste_peripherique, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(4, 4, 4)))
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(annuler_jbutton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(choisir_jbutton)
-                        .addGap(38, 38, 38))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jpanel_titre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jpanel_titre1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(separator_jpanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(liste_peripherique, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(separator_jpanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,49 +170,39 @@ public class DeviceAvailableForSharing extends JFrame implements ListSelectionLi
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(separator_jpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
-                .addComponent(liste_peripherique, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                .addComponent(liste_peripherique, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(separator_jpanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(annuler_jbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(choisir_jbutton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addComponent(jpanel_titre1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         //liste_peripherique.addListSelectionListener(this);
 
-        setSize(new java.awt.Dimension(407, 526));
+        setSize(new java.awt.Dimension(407, 497));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void liste_peripheriqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_liste_peripheriqueMouseClicked
+    private void listePeripheriqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listePeripheriqueMouseClicked
         // TODO add your handling code here:
         selected_item = liste_peripherique.getSelectedItem();
         System.out.println("Vous avez selectionné l'utilisateur : " + selected_item);
         choisir_jbutton.setEnabled(true);
-    }//GEN-LAST:event_liste_peripheriqueMouseClicked
+    }//GEN-LAST:event_listePeripheriqueMouseClicked
 
-    private void choisir_jbuttonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_choisir_jbuttonMouseReleased
+    private void choisirBtnMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_choisirBtnMouseReleased
         // TODO add your handling code here:
         InfoAboutSelectedDevice selected_dev = new InfoAboutSelectedDevice ();
         selected_dev.setSelectedIdDevice(selected_item);
         selected_dev.update();
         selected_dev.setVisible(true);
-    }//GEN-LAST:event_choisir_jbuttonMouseReleased
+    }//GEN-LAST:event_choisirBtnMouseReleased
 
-    private void annuler_jbuttonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_annuler_jbuttonMouseReleased
+    private void annulerBtnMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_annulerBtnMouseReleased
         // TODO add your handling code here:
         this.close();
-    }//GEN-LAST:event_annuler_jbuttonMouseReleased
-
-    private void listeAccrediteeMouseClickedEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listeAccrediteeMouseClickedEvent
-        // TODO add your handling code here:
-    }//GEN-LAST:event_listeAccrediteeMouseClickedEvent
-
-    private void choisir_jbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_choisir_jbuttonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_choisir_jbuttonActionPerformed
+    }//GEN-LAST:event_annulerBtnMouseReleased
 
     /**
      * @param args the command line arguments
@@ -251,6 +244,7 @@ public class DeviceAvailableForSharing extends JFrame implements ListSelectionLi
     private javax.swing.JButton annuler_jbutton;
     private javax.swing.JButton choisir_jbutton;
     private javax.swing.JPanel jpanel_titre;
+    private javax.swing.JPanel jpanel_titre1;
     private java.awt.List liste_peripherique;
     private javax.swing.JPanel separator_jpanel;
     private javax.swing.JPanel separator_jpanel1;
@@ -271,7 +265,8 @@ public class DeviceAvailableForSharing extends JFrame implements ListSelectionLi
         // Make the deserialization of the table file which is the database of the device
         IdentifiantAndKeyTable table_id_key = null;
         boolean flag_extraction =  false;
-        File file = new File("/home/pi/Desktop/identifiant_and_key_table.ser");
+        File file = new File("/home/pi/Desktop/sharing/identifiant_and_key_table.ser");
+        //File file = new File("identifiant_and_key_table.ser");
         try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
             table_id_key = (IdentifiantAndKeyTable) in.readObject();
 

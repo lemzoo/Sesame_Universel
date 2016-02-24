@@ -40,12 +40,13 @@ public class SerialPortSharerInstruction extends SerialPortGPIO{
     
     /**
      * Methode : analyzeDataReceived => Traitement des données recu
+     * @param received_data
      * @throws java.lang.InterruptedException
      */
     @Override
-    public void analyzeDataReceived() throws InterruptedException{
-
-        switch (getLastReceivedData()) {
+    public void analyzeDataReceived(String received_data) throws InterruptedException{
+        super.setLastReceivedData(received_data);
+        switch (received_data) {
             
             case BONJOUR:
                 Thread.sleep(100);
@@ -76,7 +77,7 @@ public class SerialPortSharerInstruction extends SerialPortGPIO{
                 System.out.println("|BEGIN| dans la classe hérité");
                 Thread.sleep(100);
                 // reset the buffer
-                super.setBufferReception("");
+                super.resetBufferReception();
                 super.setSavingFlag(true);
                 break;
                 
@@ -143,6 +144,8 @@ public class SerialPortSharerInstruction extends SerialPortGPIO{
         System.out.println("Contents of the buffer : " + super.getBufferReception());
         String [] data_in = SerialPortGPIO.extractBufferData(super.getBufferReception());
         
+        //reset the reception buffer
+        super.resetBufferReception();
         
         // Extract the first and last data to check the kind of request
         String first_data = data_in[0];
@@ -259,7 +262,7 @@ public class SerialPortSharerInstruction extends SerialPortGPIO{
             device = (DeviceLinkingData) in.readObject();
             System.out.println("Extraction de " + file.getName());
             System.out.println(device);
-            data_device = device.getDeviceLinkingData();
+            data_device = device.getDeviceDataWithId();
             extract_device = true;
             
         }catch(IOException io){
@@ -455,7 +458,7 @@ public class SerialPortSharerInstruction extends SerialPortGPIO{
         
 
         // Make the Deserialization of device_sharing.ser
-        file = new File("device_sharing.ser");
+        file = new File("device_to_share.ser");
         try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
             device_sharing = (DeviceLinkingData) in.readObject();
             flag_extract_device_sharing = true;             

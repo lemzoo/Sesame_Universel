@@ -421,7 +421,8 @@ public class InfoAboutSelectedDevice extends javax.swing.JFrame implements Const
         // Check if the identifiant was setted
         if (device_id.length()>0){
             // Make the deserialization of the table file which is the database of the device
-            File file = new File("/home/pi/Desktop/identifiant_and_key_table.ser");
+            File file = new File("/home/pi/Desktop/sharing/identifiant_and_key_table.ser");
+            //File file = new File("identifiant_and_key_table.ser");
             try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
                 tablea_id_key = (IdentifiantAndKeyTable) in.readObject();
 

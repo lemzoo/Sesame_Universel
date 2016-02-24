@@ -97,7 +97,7 @@ public class ManageSharedDevice extends JFrame implements ListSelectionListener 
         info_jbutton.setText("Plus d'info sur l'utilisateur");
         info_jbutton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                info_jbuttonMouseReleased(evt);
+                obtenirInfoBtnMouseReleased(evt);
             }
         });
 
@@ -106,15 +106,14 @@ public class ManageSharedDevice extends JFrame implements ListSelectionListener 
         nouveau_partage_jbutton.setText("Nouveau partage");
         nouveau_partage_jbutton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                nouveau_partage_jbuttonMouseReleased(evt);
+                effectuerPartageBtnMouseReleased(evt);
             }
         });
 
         liste_accreditee.setBackground(new java.awt.Color(153, 153, 255));
         liste_accreditee.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                liste_accrediteeMouseClicked(evt);
-                listeAccrediteeMouseClickedEvent(evt);
+                listeAccrediteeMouseClicked(evt);
             }
         });
 
@@ -175,31 +174,25 @@ public class ManageSharedDevice extends JFrame implements ListSelectionListener 
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void liste_accrediteeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_liste_accrediteeMouseClicked
+    private void listeAccrediteeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listeAccrediteeMouseClicked
         // TODO add your handling code here:
         selected_item = liste_accreditee.getSelectedItem();
         System.out.println("Vous avez selectionné l'utilisateur : " + selected_item);
         info_jbutton.setEnabled(true);
-    }//GEN-LAST:event_liste_accrediteeMouseClicked
+    }//GEN-LAST:event_listeAccrediteeMouseClicked
 
-    private void nouveau_partage_jbuttonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nouveau_partage_jbuttonMouseReleased
-        // Call the classe DeviceAvailableForSharing()
-        DeviceAvailableForSharing dev = new DeviceAvailableForSharing ();
+    private void effectuerPartageBtnMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_effectuerPartageBtnMouseReleased
+        // Call the classe DeviceAvailableForSharing()        
         this.close();
+        DeviceAvailableForSharing dev = new DeviceAvailableForSharing ();
         dev.setVisible(true);
-    }//GEN-LAST:event_nouveau_partage_jbuttonMouseReleased
+    }//GEN-LAST:event_effectuerPartageBtnMouseReleased
 
-    private void info_jbuttonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_info_jbuttonMouseReleased
+    private void obtenirInfoBtnMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_obtenirInfoBtnMouseReleased
         // TODO add your handling code here:
         InfoAboutSelectedUser info = new InfoAboutSelectedUser ();
-        //info.setSelectedId(selected_item);
-        //info.update();
         info.setVisible(true);
-    }//GEN-LAST:event_info_jbuttonMouseReleased
-
-    private void listeAccrediteeMouseClickedEvent(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listeAccrediteeMouseClickedEvent
-        // TODO add your handling code here:
-    }//GEN-LAST:event_listeAccrediteeMouseClickedEvent
+    }//GEN-LAST:event_obtenirInfoBtnMouseReleased
 
     /**
      * @param args the command line arguments
@@ -259,7 +252,8 @@ public class ManageSharedDevice extends JFrame implements ListSelectionListener 
         // Make the deserialization of the table file which is the database of the device
         OwnerInformation user = null;
         boolean flag_extraction =  false;
-        File file = new File("owner_information.ser");
+        //File file = new File("owner_information.ser");
+        File file = new File("/home/pi/Desktop/sharing/owner_information.ser");
         try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
             user = (OwnerInformation) in.readObject();
 

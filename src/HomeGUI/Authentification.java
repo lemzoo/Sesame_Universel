@@ -5,10 +5,12 @@
  */
 package HomeGUI;
 
-import LinkingGUI.*;
-import SharingGUI.*;
-import SesameApp.*;
 import AccesGUI.*;
+import AccreditedClass.*;
+import LinkingGUI.*;
+import SesameApp.*;
+import SharingClass.*;
+import SharingGUI.*;
 
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
@@ -16,9 +18,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.Arrays;
 import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
 
 /**
  *
@@ -26,19 +26,31 @@ import javax.swing.JPasswordField;
  */
 public class Authentification extends javax.swing.JFrame {
     
-    private final OwnerInformation user;
+    private final OwnerInformation owner;
     private final CreateAccesKey all_key;
     private IdentifiantAndKeyTable table_id_key;
-    private JPasswordField password;
+    private String password = "";
     
     /**
      * Creates new form Authentification
      */
     public Authentification() {
         initComponents();
-        password = new JPasswordField(null, "", 0);
-        user = new OwnerInformation();
-        System.out.println(user);
+        String data_owner [] = new String[12]; 
+        data_owner[0]  = "BA";
+        data_owner[1]  = "Lamine";
+        data_owner[2]  = "01";
+        data_owner[3]  = "01";
+        data_owner[4]  = "1990";
+        data_owner[5]  = "06 51 58 75 08";
+        data_owner[6]  = "lamine.ba@everygates.com";
+        data_owner[7]  = "13";
+        data_owner[8]  = "Avenue Maximilien Robespierre";
+        data_owner[9]  = "94400";
+        data_owner[10] = "Vitry sur Seine";
+        data_owner[11] = "France";
+        owner = new OwnerInformation(data_owner);
+        System.out.println(owner);
         
         // Create 10 keys for the test. 
         all_key = new CreateAccesKey(10);
@@ -48,7 +60,7 @@ public class Authentification extends javax.swing.JFrame {
         table_id_key = new IdentifiantAndKeyTable();
         System.out.println(table_id_key);
         
-        username_jlabel.setText(user.getOwnerLastName() + " " + user.getOwnerFirstName());
+        username_jlabel.setText(owner.getOwnerLastName() + " " + owner.getOwnerFirstName());
     }
 
     /**
@@ -225,19 +237,19 @@ public class Authentification extends javax.swing.JFrame {
     }//GEN-LAST:event_quitter_jToggleButtonActionPerformed
 
     private void entrer_jToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_entrer_jToggleButtonActionPerformed
-        password = password_jPasswordField;
+        password = password_jPasswordField.getText();
         
-        if(isEmptyTheTwoPassword(password, user.getOwnerPassword())){
+        if(isEmptyTheTwoPassword(password, owner.getOwnerPassword())){
             System.out.println("Mot de passe vide");
         }
         else{
-            if (isTheTwoPasswordIdentic(password, user.getOwnerPassword())){
+            if (isTheTwoPasswordIdentic(password, owner.getOwnerPassword())){
                 System.out.println("Mot de passe correct");
                 
                 // Make the Serialization for OwnerInformation 
                 File file = new File("owner_information.ser");
                 try(FileOutputStream fileOut = new FileOutputStream(file); ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
-                    out.writeObject(user);
+                    out.writeObject(owner);
                 }catch(IOException i){
                     System.out.println("Exception for OwnerInformation");
                 }
@@ -338,14 +350,14 @@ public class Authentification extends javax.swing.JFrame {
      *   true : if the two passwords are empty
      *   false : if not. 
      */
-    private boolean isEmptyTheTwoPassword(JPasswordField first_password, JPasswordField second_password){
+    private boolean isEmptyTheTwoPassword(String first_password, String second_password){
         
         String notification = "";
         boolean check_first_password;
-        check_first_password = first_password.getPassword().length == 0;
+        check_first_password = first_password.length() == 0;
         
         boolean check_second_password; 
-        check_second_password = second_password.getPassword().length == 0;
+        check_second_password = second_password.length() == 0;
                 
         if (check_first_password){
             notification = notification + " - Mot de Passe\n";
@@ -367,11 +379,11 @@ public class Authentification extends javax.swing.JFrame {
      *   - true : if the two password is identic
      *   - false : if not
      */
-    private boolean isTheTwoPasswordIdentic(JPasswordField first_password, JPasswordField second_password){
+    private boolean isTheTwoPasswordIdentic(String first_password, String second_password){
         
         //System.out.println("call of the methode : isTheTwoPasswordIdentic()");
         boolean validating_state;
-        validating_state = (Arrays.equals(first_password.getPassword(), second_password.getPassword()));
+        validating_state = first_password.equals(second_password);
         //System.out.println("Compare the two passwords=" + validating_state);
         
         if (validating_state){

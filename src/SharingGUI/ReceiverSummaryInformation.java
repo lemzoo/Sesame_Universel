@@ -641,55 +641,6 @@ public class ReceiverSummaryInformation extends javax.swing.JFrame implements Co
             flag = false;
         }
         
-        
-        // Check if the Receiver of the share has saved the Sharer Information => status_sharing_owner
-        /*while (flag){
-            if (tempo>7000){
-                flag=false;
-                tempo = 0;
-                System.out.println("Tempo d'attente de la réponse du périphérique a expiré");
-            }
-            else{
-                flag = (port.getLastReceivedData()!=null && !port.getLastReceivedData().equals(INFORMATION_SESAME_DOORS_ENREGISTRE_CORRECTEMENT));
-                if (!flag){
-                    System.out.println("|INFORMATION_SESAME_DOORS_ENREGISTRE_CORRECTEMENT| par le Sesame destinataire");
-                    status_sharing_device = true;
-                }
-                else{
-                    tempo =  tempo + 100;
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException ex) {}
-                }
-            }
-        }*/
-        /*// After 10 secondes, check if the accredited user is created
-        boolean flag_accredited = false;
-        try{
-            // create new files
-            File accredited_user = new File("accredited_information.ser");
-         
-            // tests if the file exists
-            flag_accredited = accredited_user.exists();         
-        }catch(Exception e){
-            // if any error occurs
-            e.printStackTrace();
-        }
-        
-        // Wait 10 secondes
-        tempo = 0;
-        while (tempo<7*seconde){
-            tempo = tempo + seconde;
-            try {
-                //System.out.println("Attente tempo : " + tempo + " secondes");
-                Thread.sleep(seconde);
-            } catch (InterruptedException ex){}
-        }
-        
-        System.out.println("Status of creating Accredited User = " + flag_accredited);
-        
-        System.out.println("Envoie des données du périphérique");*/
-        
         if (status_sharing_owner && status_sharing_device){
             System.out.println("Enregistrement de l'administrateur et de l'accrédité se sont effectués avec succes");
             try {
