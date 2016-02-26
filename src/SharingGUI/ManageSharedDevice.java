@@ -252,8 +252,8 @@ public class ManageSharedDevice extends JFrame implements ListSelectionListener 
         // Make the deserialization of the table file which is the database of the device
         OwnerInformation user = null;
         boolean flag_extraction =  false;
-        //File file = new File("owner_information.ser");
-        File file = new File("/home/pi/Desktop/sharing/owner_information.ser");
+        File file = new File("owner_information.ser");
+        //File file = new File("/home/pi/Desktop/sharing/owner_information.ser");
         try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
             user = (OwnerInformation) in.readObject();
 

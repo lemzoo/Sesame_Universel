@@ -33,7 +33,7 @@ public class SesameAvailableForSharing extends JFrame implements ListSelectionLi
     
     public SesameAvailableForSharing() {
         initComponents();
-        port = new SerialPortGPIO(115200);
+        port = new SerialPortGPIO(9600);
 
         try {
             // init the list

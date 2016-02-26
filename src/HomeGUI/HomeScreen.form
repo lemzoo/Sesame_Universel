@@ -176,11 +176,6 @@
                   <Component id="jLabel1" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
-                  <Component id="owner_jLabel" min="-2" pref="237" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
@@ -188,6 +183,19 @@
                       <Component id="date_jLabel" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
+                          <Component id="owner_jLabel" min="-2" pref="237" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="synchronize_btn" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -198,7 +206,9 @@
                   <Component id="date_jLabel" min="-2" pref="24" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                   <Component id="clock_jLabel" min="-2" pref="24" max="-2" attributes="0"/>
-                  <EmptySpace pref="192" max="32767" attributes="0"/>
+                  <EmptySpace pref="224" max="32767" attributes="0"/>
+                  <Component id="synchronize_btn" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="owner_jLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
@@ -242,6 +252,14 @@
             <Property name="text" type="java.lang.String" value="jLabel2"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JToggleButton" name="synchronize_btn">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Synchronize"/>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="synchronizeMouseReleased"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

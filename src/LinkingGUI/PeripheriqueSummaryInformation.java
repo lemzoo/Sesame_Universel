@@ -60,7 +60,7 @@ public class PeripheriqueSummaryInformation extends javax.swing.JFrame implement
         
         try {
             // open the default serial port provided on the GPIO header
-            int baudrate = 115200;
+            int baudrate = 9600;
             port = new SerialPortGPIO(baudrate);
         }
         catch(SerialPortException ex) {

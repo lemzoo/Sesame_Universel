@@ -45,7 +45,6 @@ public class SerialPortGPIO implements ConstantsConfiguration{
         System.out.println("<=============== SESAME STARTED ===============>");      
         System.out.println("<==============================================>"); 
         this.initialize();
-        //reception_buffer = "raspberry";
     }
     
     /**
@@ -83,14 +82,11 @@ public class SerialPortGPIO implements ConstantsConfiguration{
     }
     
     /**
-     * Methode : setBufferReception(String data)
-     * @param data
+     * Methode setBufferData() allows you to write the received data in the buffer which you want
+     * @param data : is the data which received by the serial port
      */
     public void setBufferReception (String data){
-        int len = buffer.length();
-        buffer.insert(len, data);
-        
-        //this.buffer = data;
+        buffer.append(data);
     }
     
     /**
@@ -106,7 +102,6 @@ public class SerialPortGPIO implements ConstantsConfiguration{
      * @return buffer 
      */
     public String getBufferReception (){
-        //return buffer;
         return buffer.toString();
     }
 
@@ -132,15 +127,6 @@ public class SerialPortGPIO implements ConstantsConfiguration{
      */
     public void setSavingFlag(boolean flag){
         this.flag_saving = flag;
-    }
-    
-    /**
-     * Methode setBufferData() allows you to write the received data in the buffer which you want
-     * @param data_received : is the data which received by the serial port
-     */
-
-    public void setBufferData(String data_received){
-        buffer.append(data_received);
     }
     
     
@@ -619,7 +605,7 @@ public class SerialPortGPIO implements ConstantsConfiguration{
      * Methode checkBufferData() allows you to verify all the data saved in the buffer
      * @throws java.lang.InterruptedException
      */
-    private void checkBufferData() throws InterruptedException{
+    public void checkBufferData() throws InterruptedException{
         System.out.println("<--- BEGIN OF CALLING checkBufferData() methode --->");
         
         // Get the data saved in the buffer

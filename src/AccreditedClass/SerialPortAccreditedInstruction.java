@@ -263,7 +263,7 @@ public class SerialPortAccreditedInstruction extends SerialPortGPIO{
      * Methode checkBufferData() allows you to verify all the data saved in the buffer
      * @throws java.lang.InterruptedException
      */
-    private void checkBufferData() throws InterruptedException{
+    public void checkBufferData() throws InterruptedException{
         System.out.println("<--- BEGIN OF CALLING checkBufferData() methode --->");
         
         // Get the data saved in the buffer

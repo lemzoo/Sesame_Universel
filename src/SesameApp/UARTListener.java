@@ -53,7 +53,7 @@ public class UARTListener implements SerialDataListener, ConstantsConfiguration 
             // Start to write the Owner information in the buffer which allocated
             if (uart.getSavingFlag()){
                 if(new_received_data.toString() == null ? BEGIN != null : !new_received_data.toString().equals(BEGIN)){
-                    uart.setBufferData(new_received_data.toString());
+                    uart.setBufferReception(new_received_data.toString());
                 }
                 else if (new_received_data.toString() == null ? END != null : new_received_data.toString().equals(END)){
                     uart.setSavingFlag(false);

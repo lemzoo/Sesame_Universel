@@ -45,7 +45,7 @@ public class ReceiverSummaryInformation extends javax.swing.JFrame implements Co
             flag_extraction = true;
         }catch(IOException i){}
         catch(ClassNotFoundException c){
-           System.out.println("PeripheriqueInformation class not found");
+           System.out.println("GuestSharingData class not found");
         }
         if (flag_extraction){
             String [] data = guest.getGuestSharingData();
@@ -68,7 +68,7 @@ public class ReceiverSummaryInformation extends javax.swing.JFrame implements Co
             
         }
         try {
-            port = new SerialPortSharerInstruction(115200);
+            port = new SerialPortSharerInstruction(9600);
         }
         catch(SerialPortException ex) {
             System.out.println(" ==>> SERIAL SETUP FAILED : " + ex.getMessage());

@@ -272,7 +272,7 @@ public class OwnerInformation extends UserIdentification implements java.io.Seri
      * @return String[] which contains the data
      */
     public String [] getOwnerInformationForLinking(){
-        String [] data_temp = super.getUserInformation();
+        String [] data_temp = getOwnerInformationForSharing();
         int size_data = data_temp.length;
         String [] data_out = new String[size_data + 2];
         System.arraycopy(data_temp, 0, data_out, 0, size_data);

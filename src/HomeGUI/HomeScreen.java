@@ -11,6 +11,7 @@ import LinkingGUI.*;
 import SesameApp.*;
 import SharingClass.*;
 import SharingGUI.*;
+import synchroShare.*;
 
 
 import java.awt.Toolkit;
@@ -28,6 +29,7 @@ public class HomeScreen extends javax.swing.JFrame {
     /**
      * Creates new form HomeScreen
      */
+    private SerialPortSynchronizeInstruction port_synchronize = null;
     
     public HomeScreen() {
         initComponents();
@@ -49,6 +51,7 @@ public class HomeScreen extends javax.swing.JFrame {
         owner_jLabel = new javax.swing.JLabel();
         date_jLabel = new javax.swing.JLabel();
         clock_jLabel = new javax.swing.JLabel();
+        synchronize_btn = new javax.swing.JToggleButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -87,6 +90,13 @@ public class HomeScreen extends javax.swing.JFrame {
         clock_jLabel.setText("jLabel2");
         clock_jLabel.setToolTipText("");
 
+        synchronize_btn.setText("Synchronize");
+        synchronize_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                synchronizeMouseReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -95,16 +105,21 @@ public class HomeScreen extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(72, 72, 72)
-                .addComponent(owner_jLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(clock_jLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
                     .addComponent(date_jLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(70, 70, 70))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(72, 72, 72)
+                        .addComponent(owner_jLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(synchronize_btn)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -113,7 +128,9 @@ public class HomeScreen extends javax.swing.JFrame {
                 .addComponent(date_jLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(clock_jLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 192, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 224, Short.MAX_VALUE)
+                .addComponent(synchronize_btn)
+                .addGap(18, 18, 18)
                 .addComponent(owner_jLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1))
@@ -338,6 +355,12 @@ public class HomeScreen extends javax.swing.JFrame {
         ManageAcces manage_acces = new ManageAcces ();
         manage_acces.setVisible(true);
     }//GEN-LAST:event_accederMouseReleased
+
+    private void synchronizeMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_synchronizeMouseReleased
+        // TODO add your handling code here:
+        System.out.println("Lancement de la procedure de synchronisation");
+        port_synchronize = new SerialPortSynchronizeInstruction(9600);
+    }//GEN-LAST:event_synchronizeMouseReleased
    
     /**
      * @param args the command line arguments
@@ -396,6 +419,7 @@ public class HomeScreen extends javax.swing.JFrame {
     private javax.swing.JMenuItem redemarrer_jMenuItem;
     private javax.swing.JMenu sesame_JMenu;
     private javax.swing.JMenuItem supprimer_jMenuItem;
+    private javax.swing.JToggleButton synchronize_btn;
     private javax.swing.JMenu systeme_jMenu;
     // End of variables declaration//GEN-END:variables
 
@@ -403,6 +427,8 @@ public class HomeScreen extends javax.swing.JFrame {
      * Methode : close() allow you to close the current windows
      */
     private void close() {
+        port_synchronize.closeUartPort();
+        
         WindowEvent winClosing = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
         Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosing);
     }
@@ -430,9 +456,7 @@ public class HomeScreen extends javax.swing.JFrame {
                         clock_jLabel.setText("Heure Locale : " + String.format("%02d", hour) + ":" + String.format("%02d", minute) + ":" + String.format("%02d", seconde));
                         sleep(1000);    
                     }
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(HomeScreen.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                } catch (InterruptedException ex) {}
             }
         };
         clock.start();

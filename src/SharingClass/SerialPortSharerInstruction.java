@@ -11,16 +11,7 @@ import HomeGUI.*;
 import LinkingGUI.*;
 import SharingGUI.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.*;
 
 /**
  *
@@ -137,7 +128,7 @@ public class SerialPortSharerInstruction extends SerialPortGPIO{
      * Methode checkBufferData() allows you to verify all the data saved in the buffer
      * @throws java.lang.InterruptedException
      */
-    private void checkBufferData() throws InterruptedException{
+    public void checkBufferData() throws InterruptedException{
         System.out.println("<--- BEGIN OF CALLING checkBufferData() methode --->");
         
         // Get the data saved in the buffer

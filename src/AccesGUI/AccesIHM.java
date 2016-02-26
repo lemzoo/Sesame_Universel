@@ -40,7 +40,7 @@ public class AccesIHM extends javax.swing.JFrame implements ConstantsConfigurati
     public AccesIHM() {
         initComponents();
         this.identifiant_sesame = "";
-        port = new SerialPortGPIO(115200);
+        port = new SerialPortGPIO(9600);
     }
 
     /**
